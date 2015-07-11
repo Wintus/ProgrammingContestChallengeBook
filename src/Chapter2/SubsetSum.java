@@ -4,7 +4,7 @@ package Chapter2;
  * Chapter 2.
  * Created by Yuya on 2015/07/11.
  */
-public class SubsetSum {
+class SubsetSum {
     final int[] a;
     final int sum;
 
