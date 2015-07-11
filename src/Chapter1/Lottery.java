@@ -19,21 +19,18 @@ public class Lottery {
     void solve() {
         int n = lots.length;
         int[] lots2 = new int[n * (n + 1) / 2];
-        for (int c = 0; c < n; c++) {
-            for (int d = c; d < n; d++) {
+        for (int c = 0; c < n; c++)
+            for (int d = c; d < n; d++)
                 lots2[c * n + d - c * (c + 1) / 2] = lots[c] + lots[d];
-            }
-        }
         Arrays.sort(lots2);
-        for (int a = 0; a < n; a++) {
-            for (int b = a; b < n; b++) {
+        boolean found = false;
+        for (int a = 0; a < n; a++)
+            for (int b = a; b < n; b++)
                 if (Arrays.binarySearch(lots2, sum - lots[a] - lots[b]) >= 0) {
-                    System.out.println("Yes");
-                    return;
+                    found = true;
+                    break;
                 }
-            }
-        }
-        System.out.println("No");
+        System.out.println(found ? "Yes" : "No");
     }
 
     public static void main(String[] args) {
