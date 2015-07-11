@@ -1,7 +1,7 @@
 package Chapter1;
 
 import java.util.Arrays;
-import java.util.stream.IntStream;
+import java.util.Scanner;
 
 /**
  * Problem of Chapter 1.
@@ -17,10 +17,19 @@ public class Ants {
     }
 
     void solve() {
-        int min;
-        int max;
+        int min, max;
         min = Arrays.stream(ants).map(x -> Math.min(x, L - x)).max().getAsInt();
         max = Arrays.stream(ants).map(x -> Math.max(x, L - x)).max().getAsInt();
         System.out.printf("%d %d\n", min, max);
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int l = scanner.nextInt();
+            int n = scanner.nextInt();
+            int[] ants = new int[n];
+            for (int i = 0; i < n; i++) ants[i] = scanner.nextInt();
+            new Ants(l, ants).solve();
+        }
     }
 }
