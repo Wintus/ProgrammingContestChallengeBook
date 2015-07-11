@@ -1,6 +1,7 @@
 package Chapter1;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Problem of Chapter 1.
@@ -20,7 +21,7 @@ public class Lottery {
         int[] lots2 = new int[n * (n + 1) / 2];
         for (int c = 0; c < n; c++) {
             for (int d = c; d < n; d++) {
-                lots2[c * n + n - d] = lots[c] + lots[d];
+                lots2[c * n + d - c * (c + 1) / 2] = lots[c] + lots[d];
             }
         }
         Arrays.sort(lots2);
@@ -33,5 +34,15 @@ public class Lottery {
             }
         }
         System.out.println("No");
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int sum = scanner.nextInt();
+            int[] lots = new int[n];
+            for (int i = 0; i < n; i++) lots[i] = scanner.nextInt();
+            new Lottery(sum, lots).solve();
+        }
     }
 }
