@@ -1,16 +1,14 @@
 package Chapter1;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Problem of chapter 1
  * Created by Wintus on 2015/07/10.
  */
-public class Triangle {
-    int[] a;
+class Triangle {
+    private final int[] a;
 
     public Triangle(int[] a) {
         this.a = a;
@@ -28,19 +26,13 @@ public class Triangle {
     }
 
     public static void main(String[] args) {
-        try (BufferedReader reader = new BufferedReader(
-                new InputStreamReader(System.in))
-        ) {
-            String line = reader.readLine();
-            int n = Integer.parseInt(line);
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
             int[] a = new int[n];
             for (int i = 0; i < n; i++) {
-                a[i] = Integer.parseInt(reader.readLine());
+                a[i] = scanner.nextInt();
             }
-            Triangle triangle = new Triangle(a);
-            triangle.solve();
-        } catch (IOException e) {
-            e.printStackTrace();
+            new Triangle(a).solve();
         }
     }
 }
