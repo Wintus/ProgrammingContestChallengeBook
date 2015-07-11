@@ -10,19 +10,16 @@ import java.util.Arrays;
  * Created by Wintus on 2015/07/10.
  */
 public class Triangle {
-    int n;
     int[] a;
 
-    public Triangle(int n, int[] a) {
-        this.n = n;
-        this.a = new int[n];
+    public Triangle(int[] a) {
         this.a = a;
     }
 
     void solve() {
         Arrays.sort(a);
         int max = 0;
-        for (int i = 2; i < n; i++) {
+        for (int i = 2; i < a.length; i++) {
             if (a[i] < a[i - 1] + a[i - 2]) {
                 max = Math.max(max, a[i] + a[i - 1] + a[i - 2]);
             }
@@ -40,7 +37,7 @@ public class Triangle {
             for (int i = 0; i < n; i++) {
                 a[i] = Integer.parseInt(reader.readLine());
             }
-            Triangle triangle = new Triangle(n, a);
+            Triangle triangle = new Triangle(a);
             triangle.solve();
         } catch (IOException e) {
             e.printStackTrace();
