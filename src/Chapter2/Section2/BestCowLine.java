@@ -23,7 +23,7 @@ public class BestCowLine {
                 if (string.charAt(a + i) < string.charAt(b - i)) {
                     left = true;
                     break;
-                } else if (string.charAt(a + i) < string.charAt(b - i)) {
+                } else if (string.charAt(a + i) > string.charAt(b - i)) {
                     left = false;
                     break;
                 }
