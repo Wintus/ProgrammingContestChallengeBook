@@ -1,6 +1,6 @@
 package Chapter2.Section1;
 
-import java.awt.*;
+import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -25,14 +25,16 @@ class Maze {
         int m = maze[0].length;
         distances = new int[n][m];
         // find the start and the goal
-        for (int i = 0; i < n; i++) {
-            for (int j = 0; j < m; j++) {
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
                 if (maze[i][j] == START)
                     start = new Point(i, j);
                 else if (maze[i][j] == GOAL)
                     goal = new Point(i, j);
-            }
-        }
+        // initialize all positions' distance as infinity
+        for (int i = 0; i < n; i++)
+            for (int j = 0; j < m; j++)
+                distances[i][j] = INF;
     }
 
     /**
@@ -42,17 +44,14 @@ class Maze {
      */
     private int bfs() {
         Queue<Point> queue = new LinkedList<>();
-        // initialize all positions' distance as infinity
-        for (int i = 0; i < distances.length; i++)
-            for (int j = 0; j < distances[0].length; j++)
-                distances[i][j] = INF;
-        // set start position distance as 0
+        // set start position's distance as 0
         queue.add(start);
         distances[start.x][start.y] = 0;
 
         while (queue.size() > 0) {
             Point here = queue.poll();
-            if (here.equals(goal)) break; // reached the goal
+            if (here.equals(goal))
+                break; // reached the goal
             for (int[] direction : directions) {
                 Point there = here.getLocation();
                 there.move(direction[0], direction[1]);
