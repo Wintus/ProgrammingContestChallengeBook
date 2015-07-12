@@ -1,7 +1,9 @@
 package Chapter1;
 
 import java.util.Arrays;
+import java.util.OptionalInt;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /**
  * Problem of Chapter 1.
@@ -16,29 +18,29 @@ class Lottery {
         this.lots = lots;
     }
 
-    void solve() {
+    // @formatter:off
+   void solve() {
         int n = lots.length;
         int[] lots2 = new int[n * (n + 1) / 2];
-        for (int c = 0; c < n; c++)
-            for (int d = c; d < n; d++)
-                lots2[c * n + d - c * (c + 1) / 2] = lots[c] + lots[d];
+        IntStream.range(0, n).parallel().forEach(c ->
+           IntStream.range(c, n).parallel().forEach(d ->
+                lots2[c * n + d - c * (c + 1) / 2] = lots[c] + lots[d]));
         Arrays.sort(lots2);
-        boolean found = false;
-        for (int a = 0; a < n; a++)
-            for (int b = a; b < n; b++)
-                if (Arrays.binarySearch(lots2, sum - lots[a] - lots[b]) >= 0) {
-                    found = true;
-                    break;
-                }
-        System.out.println(found ? "Yes" : "No");
+        OptionalInt first =
+            IntStream.range(0, n).parallel().flatMap(a ->
+                IntStream.range(a, n).parallel().map(b ->
+                    Arrays.binarySearch(lots2, sum - lots[a] - lots[b])
+                )).filter(i -> i >= 0).findFirst();
+        System.out.println(first.isPresent() ? "Yes" : "No");
     }
 
+    // @formatter:on
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
             int sum = scanner.nextInt();
             int[] lots = new int[n];
-            for (int i = 0; i < n; i++) lots[i] = scanner.nextInt();
+            IntStream.range(0, n).forEach(i -> lots[i] = scanner.nextInt());
             new Lottery(sum, lots).solve();
         }
     }

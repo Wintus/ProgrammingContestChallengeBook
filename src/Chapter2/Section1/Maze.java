@@ -1,9 +1,10 @@
 package Chapter2.Section1;
 
-import java.awt.Point;
+import java.awt.*;
 import java.util.LinkedList;
 import java.util.Queue;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /**
  * Using breadth first search.
@@ -26,16 +27,17 @@ class Maze {
         int m = maze[0].length;
         distances = new int[n][m];
         // find the start and the goal
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < m; j++)
-                if (maze[i][j] == START)
-                    start = new Point(i, j);
-                else if (maze[i][j] == GOAL)
-                    goal = new Point(i, j);
+        IntStream.range(0, n).forEach(i ->
+                IntStream.range(0, m).forEach(j -> {
+                    if (maze[i][j] == START)
+                        start = new Point(i, j);
+                    else if (maze[i][j] == GOAL)
+                        goal = new Point(i, j);
+                }));
         // initialize all positions' distance as infinity
-        for (int i = 0; i < n; i++)
-            for (int j = 0; j < m; j++)
-                distances[i][j] = INF;
+        IntStream.range(0, n).forEach(i ->
+                IntStream.range(0, m).forEach(j ->
+                        distances[i][j] = INF));
     }
 
     /**
@@ -84,9 +86,8 @@ class Maze {
             int n = scanner.nextInt();
             int m = scanner.nextInt();
             char[][] maze = new char[n][m];
-            for (int i = 0; i < n; i++) {
-                maze[i] = scanner.next().substring(0, m).toCharArray();
-            }
+            IntStream.range(0, n).forEach(i ->
+                    maze[i] = scanner.next().substring(0, m).toCharArray());
             System.out.println(new Maze(maze).solve());
         }
     }

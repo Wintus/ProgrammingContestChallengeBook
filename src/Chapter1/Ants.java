@@ -2,6 +2,7 @@ package Chapter1;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /**
  * Problem of Chapter 1.
@@ -28,7 +29,7 @@ class Ants {
             int l = scanner.nextInt();
             int n = scanner.nextInt();
             int[] ants = new int[n];
-            for (int i = 0; i < n; i++) ants[i] = scanner.nextInt();
+            IntStream.range(0, n).forEach(i -> ants[i] = scanner.nextInt());
             new Ants(l, ants).solve();
         }
     }

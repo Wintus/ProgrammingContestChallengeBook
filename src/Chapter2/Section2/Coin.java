@@ -23,7 +23,7 @@ public class Coin {
      * @return the minimum number of coins.
      */
     int solve() {
-        return IntStream.range(0, coins.length)
+        return IntStream.iterate(coins.length - 1, i -> i - 1).limit(coins.length)
                 .map(i -> {
                     int n = Math.min(amount / coins[i], holding[i]);
                     amount -= coins[i] * n;

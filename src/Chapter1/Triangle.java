@@ -2,6 +2,7 @@ package Chapter1;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /**
  * Problem of chapter 1
@@ -16,12 +17,9 @@ class Triangle {
 
     void solve() {
         Arrays.sort(a);
-        int max = 0;
-        for (int i = 2; i < a.length; i++) {
-            if (a[i] < a[i - 1] + a[i - 2]) {
-                max = Math.max(max, a[i] + a[i - 1] + a[i - 2]);
-            }
-        }
+        int max = IntStream.range(2, a.length).map(
+                i -> a[i] < a[i - 1] + a[i - 2] ? a[i] + a[i - 1] + a[i - 2] : 0
+        ).max().getAsInt();
         System.out.println(max);
     }
 
@@ -29,9 +27,7 @@ class Triangle {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
             int[] a = new int[n];
-            for (int i = 0; i < n; i++) {
-                a[i] = scanner.nextInt();
-            }
+            IntStream.range(0, n).forEach(i -> a[i] = scanner.nextInt());
             new Triangle(a).solve();
         }
     }
