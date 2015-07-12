@@ -1,6 +1,8 @@
 package Chapter2.Section2;
 
 import java.util.Arrays;
+import java.util.Scanner;
+import java.util.stream.IntStream;
 
 /**
  * Greedy algorithm.
@@ -28,5 +30,15 @@ public class SarumanArmy {
             ++n;
         }
         return n;
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int r = scanner.nextInt();
+            int[] points = IntStream.range(0, n).map(x -> scanner.nextInt())
+                              .toArray();
+            System.out.println(new SarumanArmy(n, r, points).solve());
+        }
     }
 }
