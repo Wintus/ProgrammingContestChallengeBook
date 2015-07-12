@@ -1,5 +1,6 @@
 package Chapter2.Section2;
 
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 /**
@@ -28,5 +29,16 @@ public class Coin {
                     amount -= coins[i] * n;
                     return n;
                 }).sum();
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int[] holding = new int[coins.length];
+            for (int i = 0; i < coins.length; i++) {
+                holding[i] = scanner.nextInt();
+            }
+            int amount = scanner.nextInt();
+            System.out.println(new Coin(holding, amount).solve());
+        }
     }
 }
