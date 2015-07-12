@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.Arrays;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Scanner;
 
 /**
  * Greedy Algorithm.
@@ -27,5 +28,12 @@ public class BestCowLine {
                 writer.append(deque.pollFirst());
         }
         return writer.toString();
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            scanner.nextInt();
+            System.out.println(new BestCowLine(scanner.next()));
+        }
     }
 }
