@@ -1,5 +1,7 @@
 package Chapter2.Section2;
 
+import java.util.Arrays;
+
 /**
  * Greedy algorithm.
  * Created by Yuya on 2015/07/12.
@@ -13,5 +15,18 @@ public class SarumanArmy {
         N = n;
         R = r;
         this.points = points;
+    }
+
+    int solve() {
+        Arrays.sort(points);
+        int i = 0, n = 0;
+        while (i < N) {
+            int leftmost = points[i++];
+            while (i < N && points[i] <= leftmost + R) ++i;
+            int p = points[i - 1];
+            while (i < N && points[i] <= p + R) ++i;
+            ++n;
+        }
+        return n;
     }
 }
