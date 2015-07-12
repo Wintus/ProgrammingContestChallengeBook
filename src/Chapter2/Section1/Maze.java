@@ -3,6 +3,7 @@ package Chapter2.Section1;
 import java.awt.Point;
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
 /**
  * Using breadth first search.
@@ -14,8 +15,8 @@ class Maze {
     private static final char GOAL = 'G';
     private static final int INF = Integer.MAX_VALUE / 4;
     private static final int[][] directions = {{1, 0}, {0, 1}, {-1, 0}, {0, -1}};
-    private char[][] maze;
-    private int[][] distances;
+    private final char[][] maze;
+    private final int[][] distances;
     private Point start;
     private Point goal;
 
@@ -76,5 +77,17 @@ class Maze {
      */
     int solve() {
         return bfs();
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+            char[][] maze = new char[n][m];
+            for (int i = 0; i < n; i++) {
+                maze[i] = scanner.next().substring(0, m).toCharArray();
+            }
+            System.out.println(new Maze(maze).solve());
+        }
     }
 }
