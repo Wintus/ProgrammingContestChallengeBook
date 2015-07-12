@@ -9,12 +9,10 @@ import java.util.stream.IntStream;
  * Created by Yuya on 2015/07/12.
  */
 public class SarumanArmy {
-    private int N;
     private int R;
     private int[] points;
 
-    public SarumanArmy(int n, int r, int[] points) {
-        N = n;
+    public SarumanArmy(int r, int[] points) {
         R = r;
         this.points = points;
     }
@@ -22,6 +20,7 @@ public class SarumanArmy {
     int solve() {
         Arrays.sort(points);
         int i = 0, n = 0;
+        int N = points.length;
         while (i < N) {
             int leftmost = points[i++];
             while (i < N && points[i] <= leftmost + R) ++i;
@@ -38,7 +37,7 @@ public class SarumanArmy {
             int r = scanner.nextInt();
             int[] points = IntStream.range(0, n).map(x -> scanner.nextInt())
                               .toArray();
-            System.out.println(new SarumanArmy(n, r, points).solve());
+            System.out.println(new SarumanArmy(r, points).solve());
         }
     }
 }
