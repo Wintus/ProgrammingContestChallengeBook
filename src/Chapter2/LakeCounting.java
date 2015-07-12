@@ -1,17 +1,20 @@
 package Chapter2;
 
+import java.util.Scanner;
+import java.util.stream.Stream;
+
 /**
  * Using Deep First Search
  * Created by Yuya on 2015/07/11.
  */
 public class LakeCounting {
-    boolean[][] field; // true: lake, false: land
+    Boolean[][] field; // true: lake, false: land
     final private int[][] neighbors =
             {{-1, -1}, {-1, 0}, {-1, 1},
                     {0, -1}, {0, 1},
                     {1, -1}, {1, 0}, {1, 1}};
 
-    public LakeCounting(boolean[][] field) {
+    public LakeCounting(Boolean[][] field) {
         this.field = field;
     }
 
@@ -32,5 +35,20 @@ public class LakeCounting {
             for (int j = 0; j < field[0].length; j++)
                 if (field[i][j]) dfs(i, j);
         return count;
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+            Boolean[][] field = new Boolean[n][m];
+            for (int i = 0; i < n; i++) {
+                Boolean[] booleans = scanner.next().chars()
+                        .mapToObj(c -> (char) c == 'W')
+                        .toArray(Boolean[]::new);
+                field[i] = booleans;
+            }
+            System.out.println(new LakeCounting(field).solve());
+        }
     }
 }
