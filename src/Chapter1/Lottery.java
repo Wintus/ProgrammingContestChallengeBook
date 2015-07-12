@@ -8,8 +8,8 @@ import java.util.Scanner;
  * Created by Wintus on 2015/07/11.
  */
 class Lottery {
-    final int sum;
-    final int[] lots;
+    private final int sum;
+    private final int[] lots;
 
     public Lottery(int sum, int[] lots) {
         this.sum = sum;

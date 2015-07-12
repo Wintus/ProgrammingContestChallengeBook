@@ -7,8 +7,8 @@ import java.util.Scanner;
  * Created by Yuya on 2015/07/11.
  */
 class SubsetSum {
-    final int[] a;
-    final int sum;
+    private final int[] a;
+    private final int sum;
 
     public SubsetSum(int[] a, int sum) {
         this.a = a;

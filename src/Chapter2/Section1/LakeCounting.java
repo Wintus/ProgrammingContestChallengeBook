@@ -6,9 +6,9 @@ import java.util.Scanner;
  * Using Deep First Search
  * Created by Yuya on 2015/07/11.
  */
-public class LakeCounting {
-    Boolean[][] field; // true: lake, false: land
-    final private int[][] neighbors =
+class LakeCounting {
+    private final Boolean[][] field; // true: lake, false: land
+    private final int[][] neighbors =
             {{-1, -1}, {-1, 0}, {-1, 1},
                     {0, -1}, {0, 1},
                     {1, -1}, {1, 0}, {1, 1}};
