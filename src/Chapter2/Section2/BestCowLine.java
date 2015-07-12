@@ -1,9 +1,6 @@
 package Chapter2.Section2;
 
 import java.io.StringWriter;
-import java.util.Arrays;
-import java.util.Deque;
-import java.util.LinkedList;
 import java.util.Scanner;
 
 /**
@@ -11,21 +8,28 @@ import java.util.Scanner;
  * Created by Yuya on 2015/07/12.
  */
 public class BestCowLine {
-    char[] chars;
+    String string;
 
     public BestCowLine(String string) {
-        chars = string.toCharArray();
+        this.string = string;
     }
 
     String solve() {
-        Deque<Character> deque = new LinkedList<>();
-        for (char c : chars) deque.add(c);
+        int a = 0, b = string.length() - 1; // str left in [a, b]
         StringWriter writer = new StringWriter();
-        while (deque.size() > 0) {
-            if (deque.peekFirst() < deque.peekLast())
-                writer.append(deque.pollFirst());
-            else
-                writer.append(deque.pollFirst());
+        while (a <= b) {
+            boolean left = false;
+            for (int i = 0; a + i <= b; i++) {
+                if (string.charAt(a + i) < string.charAt(b - i)) {
+                    left = true;
+                    break;
+                } else if (string.charAt(a + i) < string.charAt(b - i)) {
+                    left = false;
+                    break;
+                }
+            }
+            if (left) writer.append(string.charAt(a++));
+            else writer.append(string.charAt(b--));
         }
         return writer.toString();
     }
@@ -33,7 +37,7 @@ public class BestCowLine {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             scanner.nextInt();
-            System.out.println(new BestCowLine(scanner.next()));
+            System.out.println(new BestCowLine(scanner.next()).solve());
         }
     }
 }
