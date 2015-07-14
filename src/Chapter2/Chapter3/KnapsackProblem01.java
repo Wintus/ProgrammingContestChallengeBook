@@ -39,15 +39,27 @@ class KnapsackProblem01 {
         return recursion(0, weight);
     }
 
+    int solve1() {
+        int N = items.length;
+        // @formatter:off
+        IntStream.range(0, N).forEach(n ->
+            IntStream.rangeClosed(0, weight).forEach(w ->
+                dp[n+1][w] = w < items[n][0] ?
+                    dp[n][w] :
+                    Math.max(dp[n][w], dp[n][w - items[n][0]] + items[n][1])));
+        return dp[N][weight];
+    }
+
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
             int[][] items = new int[n][2];
             // @formatter:off
             IntStream.range(0, n).forEach(i ->
-                items[i] = new int[]{scanner.nextInt(), scanner.nextInt()});
+                Arrays.setAll(items[i], x -> scanner.nextInt()));
             int w = scanner.nextInt();
             System.out.println(new KnapsackProblem01(items, w).solve());
+            System.out.println(new KnapsackProblem01(items, w).solve1());
         }
     }
 }
