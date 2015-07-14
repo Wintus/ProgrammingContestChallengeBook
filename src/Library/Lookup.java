@@ -8,6 +8,13 @@ import java.util.function.UnaryOperator;
  * Created by Yuya on 2015/07/14.
  */
 public class Lookup {
+    /**
+     * Gets the smallest index of key &lt;= arr[i] by using binary search.
+     * @param arr array to be looked up.
+     * @param key lookup key.
+     * @param <T> type parameter.
+     * @return the smallest index.
+     */
     public static <T extends Comparable<? super T>> int
     lower_bound(T[] arr, T key) {
         int len = arr.length;
@@ -29,6 +36,13 @@ public class Lookup {
         }
     }
 
+    /**
+     * Gets the smallest index of key &lt; arr[i] by using binary search.
+     * @param arr array to be looked up.
+     * @param key lookup key.
+     * @param <T> type parameter.
+     * @return the smallest index.
+     */
     public static <T extends Comparable<? super T>> int
     upper_bound(T[] arr, T key) {
         int len = arr.length;
@@ -50,12 +64,26 @@ public class Lookup {
         }
     }
 
+    /**
+     * Converts the element at index given by {@code lower_bound}.
+     * @param array array to be looked up.
+     * @param key the key.
+     * @param operator operator convert the found element.
+     * @param <T> type parameter.
+     */
     public static <T extends Comparable<? super T>> void
     lower_bound(T[] array, T key, UnaryOperator<T> operator) {
         int i = lower_bound(array, key);
         array[i] = operator.apply(array[i]);
     }
 
+    /**
+     * Converts the element at index given by {@code upper_bound}.
+     * @param array array to be looked up.
+     * @param key the key.
+     * @param operator operator convert the found element.
+     * @param <T> type parameter.
+     */
     public static <T extends Comparable<? super T>> void
     upper_bound(T[] array, T key, UnaryOperator<T> operator) {
         int i = upper_bound(array, key);
