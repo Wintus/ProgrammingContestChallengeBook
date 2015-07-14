@@ -1,5 +1,6 @@
 package Chapter2.Section3;
 
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 /**
@@ -7,12 +8,12 @@ import java.util.stream.IntStream;
  * Created by Yuya on 2015/07/14.
  */
 class LongestIncreasingSubsequence {
-    int[] numbers;
-    int[] dp;
+    private final int[] numbers;
+    private final int[] dp;
 
-    public LongestIncreasingSubsequence(int[] numbers, int[] dp) {
+    public LongestIncreasingSubsequence(int[] numbers) {
         this.numbers = numbers;
-        this.dp = dp;
+        dp = new int[numbers.length];
     }
 
     /**
@@ -29,5 +30,13 @@ class LongestIncreasingSubsequence {
             });
             return dp[i];
         }).max().getAsInt();
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int[] nums = IntStream.range(0, n).map(i -> scanner.nextInt()).toArray();
+            System.out.println(new LongestIncreasingSubsequence(nums).solve());
+        }
     }
 }
