@@ -19,6 +19,14 @@ class KnapsackProblem01 {
         dp = new int[items.length + 1][weight + 1];
     }
 
+    /**
+     * helper function.gives max total value from nth item with total weight
+     * less than w.
+     *
+     * @param n index of items.
+     * @param w limit weight.
+     * @return max total value.
+     */
     private int recursion(int n, int w) {
         if (dp[n][w] >= 0)
             return dp[n][w];
@@ -42,6 +50,23 @@ class KnapsackProblem01 {
         IntStream.range(0, dp.length)
                  .forEach(n -> Arrays.setAll(dp[n], x -> -1));
         return recursion(0, weight);
+    }
+
+    /**
+     * iterative version solver from recursive version.
+     *
+     * @return max total value.
+     */
+    int solve0() {
+        int N = items.length;
+        // @formatter:off
+        IntStream.iterate(N - 1, n -> n - 1).limit(N).forEach(n ->
+            IntStream.rangeClosed(0, weight).forEach(w ->
+                dp[n][w] = w < items[n][0] ?
+                    dp[n + 1][w] :
+                    Math.max(dp[n + 1][w],
+                             dp[n + 1][w - items[n][0]] + items[n][1])));
+        return dp[0][weight];
     }
 
     /**
@@ -69,6 +94,7 @@ class KnapsackProblem01 {
                 Arrays.setAll(items[i], x -> scanner.nextInt()));
             int w = scanner.nextInt();
             System.out.println(new KnapsackProblem01(items, w).solve());
+            System.out.println(new KnapsackProblem01(items, w).solve0());
             System.out.println(new KnapsackProblem01(items, w).solve1());
         }
     }
