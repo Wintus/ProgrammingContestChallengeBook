@@ -1,0 +1,64 @@
+package Library;
+
+import java.util.function.UnaryOperator;
+
+/**
+ * helper library.
+ * http://thushw.blogspot.com/2010/07/why-am-i-writing-lowerbound-in-java.html
+ * Created by Yuya on 2015/07/14.
+ */
+public class Lookup {
+    public static <T extends Comparable<? super T>> int
+    lower_bound(T[] arr, T key) {
+        int len = arr.length;
+        int lo = 0;
+        int hi = len - 1;
+        int mid = (lo + hi) / 2;
+        while (true) {
+            int cmp = arr[mid].compareTo(key);
+            if (cmp == 0 || cmp > 0) {
+                hi = mid - 1;
+                if (hi < lo)
+                    return mid;
+            } else {
+                lo = mid + 1;
+                if (hi < lo)
+                    return mid < len - 1 ? mid + 1 : -1;
+            }
+            mid = (lo + hi) / 2;
+        }
+    }
+
+    public static <T extends Comparable<? super T>> int
+    upper_bound(T[] arr, T key) {
+        int len = arr.length;
+        int lo = 0;
+        int hi = len - 1;
+        int mid = (lo + hi) / 2;
+        while (true) {
+            int cmp = arr[mid].compareTo(key);
+            if (cmp == 0 || cmp < 0) {
+                lo = mid + 1;
+                if (hi < lo)
+                    return mid < len - 1 ? mid + 1 : -1;
+            } else {
+                hi = mid - 1;
+                if (hi < lo)
+                    return mid;
+            }
+            mid = (lo + hi) / 2;
+        }
+    }
+
+    public static <T extends Comparable<? super T>> void
+    lower_bound(T[] array, T key, UnaryOperator<T> operator) {
+        int i = lower_bound(array, key);
+        array[i] = operator.apply(array[i]);
+    }
+
+    public static <T extends Comparable<? super T>> void
+    upper_bound(T[] array, T key, UnaryOperator<T> operator) {
+        int i = upper_bound(array, key);
+        array[i] = operator.apply(array[i]);
+    }
+}
