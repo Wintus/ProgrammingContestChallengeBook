@@ -56,8 +56,10 @@ class KnapsackProblemUnbounded {
             IntStream.range(0, n).forEach(i ->
                     Arrays.setAll(items[i], x -> scanner.nextInt()));
             int w = scanner.nextInt();
-            System.out.println(new KnapsackProblemUnbounded(items, w).solve());
-            System.out.println(new KnapsackProblemUnbounded(items, w).solve1());
+            KnapsackProblemUnbounded knapsackProblemUnbounded =
+                    new KnapsackProblemUnbounded(items, w);
+            System.out.println(knapsackProblemUnbounded.solve());
+            System.out.println(knapsackProblemUnbounded.solve1());
         }
     }
 }

@@ -12,6 +12,7 @@ class KnapsackProblem01 {
     private final int[][] items; // {{weight, value}}
     private final int weight;
     private final int[][] dp; // {{nth item, weight}}
+    private int N;
 
     public KnapsackProblem01(int[][] items, int weight) {
         this.items = items;
@@ -58,7 +59,8 @@ class KnapsackProblem01 {
      * @return max total value.
      */
     int solve0() {
-        int N = items.length;
+        N = items.length;
+        Arrays.setAll(dp[dp.length - 1], x -> 0);
         // @formatter:off
         IntStream.iterate(N - 1, n -> n - 1).limit(N).forEach(n ->
             IntStream.rangeClosed(0, weight).forEach(w ->
@@ -75,7 +77,8 @@ class KnapsackProblem01 {
      * @return max total value.
      */
     int solve1() {
-        int N = items.length;
+        N = items.length;
+        Arrays.setAll(dp[0], x -> 0);
         // @formatter:off
         IntStream.range(0, N).forEach(n ->
             IntStream.rangeClosed(0, weight).forEach(w ->
@@ -92,6 +95,7 @@ class KnapsackProblem01 {
      */
     int solve2() {
         int N = items.length;
+        Arrays.setAll(dp[0], x -> 0);
         // @formatter:off
         IntStream.range(0, N).forEach(n ->
             IntStream.rangeClosed(0, weight).forEach(w -> {
@@ -125,11 +129,13 @@ class KnapsackProblem01 {
             IntStream.range(0, n).forEach(i ->
                 Arrays.setAll(items[i], x -> scanner.nextInt()));
             int w = scanner.nextInt();
-            System.out.println(new KnapsackProblem01(items, w).solve());
-            System.out.println(new KnapsackProblem01(items, w).solve0());
-            System.out.println(new KnapsackProblem01(items, w).solve1());
-            System.out.println(new KnapsackProblem01(items, w).solve2());
-            System.out.println(new KnapsackProblem01(items, w).solve3());
+            KnapsackProblem01 knapsackProblem01 =
+                    new KnapsackProblem01(items, w);
+            System.out.println(knapsackProblem01.solve());
+            System.out.println(knapsackProblem01.solve0());
+            System.out.println(knapsackProblem01.solve1());
+            System.out.println(knapsackProblem01.solve2());
+            System.out.println(knapsackProblem01.solve3());
         }
     }
 }
