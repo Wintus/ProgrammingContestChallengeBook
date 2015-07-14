@@ -85,6 +85,25 @@ class KnapsackProblem01 {
         return dp[N][weight];
     }
 
+    /**
+     * another iterative version solver in ascending order of n.
+     *
+     * @return max total value.
+     */
+    int solve2() {
+        int N = items.length;
+        // @formatter:off
+        IntStream.range(0, N).forEach(n ->
+            IntStream.rangeClosed(0, weight).forEach(w -> {
+                dp[n + 1][w] = Math.max(dp[n + 1][w], dp[n][w]);
+                int wi = items[n][0];
+                if (w + wi <= weight)
+                    dp[n + 1][w + wi] =
+                        Math.max(dp[n + 1][w + wi], dp[n][w] + items[n][1]);
+            }));
+        return dp[N][weight];
+    }
+
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
@@ -96,6 +115,7 @@ class KnapsackProblem01 {
             System.out.println(new KnapsackProblem01(items, w).solve());
             System.out.println(new KnapsackProblem01(items, w).solve0());
             System.out.println(new KnapsackProblem01(items, w).solve1());
+            System.out.println(new KnapsackProblem01(items, w).solve2());
         }
     }
 }
