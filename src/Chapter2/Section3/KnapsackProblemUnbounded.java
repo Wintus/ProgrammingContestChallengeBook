@@ -36,6 +36,19 @@ class KnapsackProblemUnbounded {
         return dp[N][weight];
     }
 
+    /**
+     * iterative version solver reusing the same array.
+     *
+     * @return max total value.
+     */
+    int solve1() {
+        int[] dp = new int[weight + 1];
+        IntStream.range(0, items.length).forEach(n ->
+            IntStream.rangeClosed(items[n][0], weight).forEach(w ->
+                dp[w] = Math.max(dp[w], dp[w - items[n][0]] + items[n][1])));
+        return dp[weight];
+    }
+
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
@@ -44,6 +57,7 @@ class KnapsackProblemUnbounded {
                     Arrays.setAll(items[i], x -> scanner.nextInt()));
             int w = scanner.nextInt();
             System.out.println(new KnapsackProblemUnbounded(items, w).solve());
+            System.out.println(new KnapsackProblemUnbounded(items, w).solve1());
         }
     }
 }
