@@ -33,12 +33,22 @@ class KnapsackProblem01 {
         return dp[n][w] = result;
     }
 
+    /**
+     * recursive version solver.
+     *
+     * @return max total value.
+     */
     int solve() {
         IntStream.range(0, dp.length)
                  .forEach(n -> Arrays.setAll(dp[n], x -> -1));
         return recursion(0, weight);
     }
 
+    /**
+     * iterative version solver in ascending order of n.
+     *
+     * @return max total value.
+     */
     int solve1() {
         int N = items.length;
         // @formatter:off
