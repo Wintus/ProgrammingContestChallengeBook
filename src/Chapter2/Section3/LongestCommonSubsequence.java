@@ -1,6 +1,7 @@
 package Chapter2.Section3;
 
 import java.util.Arrays;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 /**
@@ -29,5 +30,14 @@ class LongestCommonSubsequence {
                 dp[i + 1][j + 1] = string0.charAt(i) == string1.charAt(j) ?
                     dp[i][j] + 1 : Math.max(dp[i][j + 1], dp[i + 1][j])));
         return dp[n][m];
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            String str0 = scanner.next();
+            String str1 = scanner.next();
+            System.out.println(
+                    new LongestCommonSubsequence(str0, str1).solve());
+        }
     }
 }
