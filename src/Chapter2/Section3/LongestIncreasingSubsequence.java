@@ -17,8 +17,8 @@ class LongestIncreasingSubsequence {
 
     public LongestIncreasingSubsequence(int[] numbers) {
         this.numbers = numbers;
-        dp = new int[numbers.length];
         N = numbers.length;
+        dp = new int[N];
     }
 
     /**
@@ -56,8 +56,10 @@ class LongestIncreasingSubsequence {
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
-            int[] nums = IntStream.range(0, n).map(i -> scanner.nextInt()).toArray();
-            LongestIncreasingSubsequence lis = new LongestIncreasingSubsequence(nums);
+            int[] nums = IntStream.range(0, n)
+                                  .map(i -> scanner.nextInt()).toArray();
+            LongestIncreasingSubsequence lis =
+                    new LongestIncreasingSubsequence(nums);
             System.out.println(lis.solve());
             System.out.println(lis.solve1());
         }
