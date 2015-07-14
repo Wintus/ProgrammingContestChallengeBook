@@ -79,7 +79,7 @@ class KnapsackProblem01 {
         // @formatter:off
         IntStream.range(0, N).forEach(n ->
             IntStream.rangeClosed(0, weight).forEach(w ->
-                dp[n+1][w] = w < items[n][0] ?
+                dp[n + 1][w] = w < items[n][0] ?
                     dp[n][w] :
                     Math.max(dp[n][w], dp[n][w - items[n][0]] + items[n][1])));
         return dp[N][weight];
