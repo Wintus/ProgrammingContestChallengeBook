@@ -16,7 +16,7 @@ class KnapsackProblem01 {
     public KnapsackProblem01(int[][] items, int weight) {
         this.items = items;
         this.weight = weight;
-        dp = new int[items.length + 1][items[0].length + 1];
+        dp = new int[items.length + 1][weight + 1];
     }
 
     private int recursion(int n, int w) {
@@ -27,7 +27,7 @@ class KnapsackProblem01 {
             result = 0;
         else if (w < items[n][0])
             result = recursion(n + 1, w);
-        else
+        else // not use nth item or use it
             result = Math.max(recursion(n + 1, w),
                     recursion(n + 1, w - items[n][0]) + items[n][1]);
         return dp[n][w] = result;
