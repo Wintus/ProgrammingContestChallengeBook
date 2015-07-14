@@ -26,7 +26,7 @@ class KnapsackProblem01_2 {
     /**
      * iterative version solver in ascending order of n.
      * dp[n + 1][v] = min total weight
-     *                  of items from 0th to nth with total value = v.
+     * of items from 0th to nth with total value = v.
      *
      * @return max total value.
      */
@@ -46,7 +46,6 @@ class KnapsackProblem01_2 {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
             int[][] items = new int[n][2];
-            // @formatter:off
             IntStream.range(0, n).forEach(i ->
                 Arrays.setAll(items[i], x -> scanner.nextInt()));
             int w = scanner.nextInt();
