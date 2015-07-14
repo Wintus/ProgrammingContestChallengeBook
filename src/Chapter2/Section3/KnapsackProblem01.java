@@ -104,6 +104,19 @@ class KnapsackProblem01 {
         return dp[N][weight];
     }
 
+    /**
+     * iterative version solver from recursive version reusing the same array.
+     *
+     * @return max total value.
+     */
+    int solve3() {
+        int[] dp = new int[weight + 1];
+        for (int[] item : items)
+            for (int w = weight; w >= item[0]; w--)
+                dp[w] = Math.max(dp[w], dp[w - item[0]] + item[1]);
+        return dp[weight];
+    }
+
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
@@ -116,6 +129,7 @@ class KnapsackProblem01 {
             System.out.println(new KnapsackProblem01(items, w).solve0());
             System.out.println(new KnapsackProblem01(items, w).solve1());
             System.out.println(new KnapsackProblem01(items, w).solve2());
+            System.out.println(new KnapsackProblem01(items, w).solve3());
         }
     }
 }
