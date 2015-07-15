@@ -10,7 +10,7 @@ import java.util.stream.IntStream;
  */
 public class RepeatedCombination {
     int n, m;
-    int[] a; // number of each n items
+    int[] a; // number of each m items
     int M;
     int[][] dp;
 
@@ -25,7 +25,7 @@ public class RepeatedCombination {
     /**
      * dp[i+1][j] = total number of combination of j items up to ith.
      *
-     * @return total number of combination of m items of n kinds.
+     * @return total number of combination of n items of m kinds.
      */
     int solve() {
         IntStream.rangeClosed(0, m).forEach(i -> dp[i][0] = 1);
