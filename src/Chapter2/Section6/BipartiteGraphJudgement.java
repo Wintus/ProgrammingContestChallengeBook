@@ -47,9 +47,10 @@ public class BipartiteGraphJudgement {
             int n = Integer.parseInt(scanner.nextLine());
             ArrayList<ArrayList<Integer>> graph = new ArrayList<>();
             for (int i = 0; i < n; i++) graph.add(new ArrayList<>());
-            for (ArrayList<Integer> adj : graph)
+            graph.forEach(adj -> {
                 for (String s : scanner.nextLine().split(" "))
                     adj.add(Integer.parseInt(s));
+            });
             boolean result = new BipartiteGraphJudgement(graph).solve();
             System.out.println(result ? "Yes" : "No");
         }
