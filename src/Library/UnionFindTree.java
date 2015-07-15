@@ -7,7 +7,7 @@ import java.util.Collection;
  * Generified.
  * Created by Yuya on 2015/07/15.
  */
-public class UnionFindTree<T extends Comparable<? super T>> {
+public class UnionFindTree<T> {
     private final ArrayList<Node<T>> trees;
 
     public UnionFindTree(Collection<T> collection) {
@@ -15,10 +15,10 @@ public class UnionFindTree<T extends Comparable<? super T>> {
         collection.forEach(t -> trees.add(new Node<>(t)));
     }
 
-    class Node<E extends Comparable<? super E>> {
+    class Node<E> {
         private E data;
         private Node<E> parent;
-        private ArrayList<Node<E>> children;
+        private final ArrayList<Node<E>> children;
         private int rank;
 
         public Node(E data) {
@@ -48,10 +48,6 @@ public class UnionFindTree<T extends Comparable<? super T>> {
             return children;
         }
 
-        public void setChildren(ArrayList<Node<E>> children) {
-            this.children = children;
-        }
-
         public int getRank() {
             return rank;
         }
@@ -60,11 +56,11 @@ public class UnionFindTree<T extends Comparable<? super T>> {
             this.rank = rank;
         }
 
-        public boolean isParent() {
+        public boolean isRoot() {
             return parent == null;
         }
 
-        private boolean isLeaf() {
+        public boolean isLeaf() {
             return children.isEmpty();
         }
 
@@ -76,18 +72,19 @@ public class UnionFindTree<T extends Comparable<? super T>> {
     }
 
     private Node<T> findRoot(Node<T> node) {
-        if (node.isParent())
+        if (node.isRoot())
             return node;
         else {
-            Node<T> parent = findRoot(node.getParent());
-            node.setParent(parent);
-            parent.setRank(parent.getHeight());
-            return parent;
+            Node<T> root = findRoot(node.getParent());
+            node.setParent(root);
+            root.setRank(root.getHeight());
+            return root;
         }
     }
 
     private Node<T> getNode(T t) {
-        return trees.stream().filter(n -> n.getData() == t).findFirst().get();
+        return trees.stream()
+                    .filter(node -> node.getData() == t).findFirst().get();
     }
 
     void unite(T x, T y) {
