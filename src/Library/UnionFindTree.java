@@ -59,5 +59,21 @@ public class UnionFindTree<T extends Comparable<? super T>> {
         public void setRank(int rank) {
             this.rank = rank;
         }
+
+        public boolean isParent() {
+            return parent == null;
+        }
+    }
+
+    T findRoot(T t) {
+        Node<T> node = trees.stream()
+                            .filter(n -> n.getData() == t).findFirst().get();
+        if (node.isParent())
+            return t;
+        else {
+            T parent = findRoot(node.getParent());
+            node.setParent(parent);
+            return parent;
+        }
     }
 }
