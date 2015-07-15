@@ -74,4 +74,21 @@ public class UnionFindTree<T extends Comparable<? super T>> {
             return parent;
         }
     }
+
+    private Node<T> getNode(T t) {
+        return trees.stream().filter(n -> n.getData() == t).findFirst().get();
+    }
+
+    void unite(T x, T y) {
+        Node<T> rootX = findRoot(getNode(x)), rootY = findRoot(getNode(y));
+        if (rootX == rootY) return;
+        if (rootX.rank < rootY.rank) {
+            rootX.setParent(rootY);
+            rootY.getChildren().add(rootX);
+        } else {
+            rootY.setParent(rootX);
+            rootX.getChildren().add(rootY);
+            if (rootX.rank < rootY.rank) ++rootX.rank;
+        }
+    }
 }
