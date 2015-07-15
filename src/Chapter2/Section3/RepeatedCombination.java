@@ -1,5 +1,7 @@
 package Chapter2.Section3;
 
+import java.util.Arrays;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 /**
@@ -12,7 +14,7 @@ public class RepeatedCombination {
     int M;
     int[][] dp;
 
-    public RepeatedCombination(int n, int[] a, int m) {
+    public RepeatedCombination(int[] a, int n, int m) {
         this.n = n;
         this.a = a;
         this.m = a.length;
@@ -28,5 +30,16 @@ public class RepeatedCombination {
                 dp[i + 1][j] = (dp[i + 1][j - 1] + dp[i][j] +
                     (j - 1 - a[i] >= 0 ? M - dp[i][j - 1 - a[i]] : 0)) % M));
         return dp[m][n];
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+            int[] a = new int[n];
+            Arrays.setAll(a, x -> scanner.nextInt());
+            int M = scanner.nextInt();
+            System.out.println(new RepeatedCombination(a, m, M).solve());
+        }
     }
 }
