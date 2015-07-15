@@ -8,7 +8,7 @@ import java.util.stream.IntStream;
  * Created by Yuya on 2015/07/12.
  */
 public class Coin {
-    public static final int[] coins = {1, 5, 10, 50, 100, 500};
+    private static final int[] coins = {1, 5, 10, 50, 100, 500};
     private int[] holding = new int[coins.length];
     private int amount;
 

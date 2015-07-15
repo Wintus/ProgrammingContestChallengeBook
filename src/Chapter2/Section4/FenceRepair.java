@@ -9,7 +9,7 @@ import java.util.Scanner;
  * Created by Yuya on 2015/07/14.
  */
 public class FenceRepair {
-    private int[] boards;
+    private final int[] boards;
 
     public FenceRepair(int[] boards) {
         this.boards = boards;

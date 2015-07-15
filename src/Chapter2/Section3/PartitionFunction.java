@@ -8,8 +8,8 @@ import java.util.stream.IntStream;
  * Created by Yuya on 2015/07/14.
  */
 public class PartitionFunction {
-    int n, m, M;
-    int[][] dp;
+    private final int n, m, M;
+    private final int[][] dp;
 
     public PartitionFunction(int n, int m, int m1) {
         this.n = n;

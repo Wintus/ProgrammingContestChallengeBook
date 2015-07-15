@@ -13,7 +13,7 @@ import java.util.stream.IntStream;
 class LongestIncreasingSubsequence {
     private final int[] numbers;
     private final int[] dp;
-    private int N;
+    private final int N;
 
     public LongestIncreasingSubsequence(int[] numbers) {
         this.numbers = numbers;

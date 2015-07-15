@@ -9,9 +9,9 @@ import java.util.stream.IntStream;
  * Created by Yuya on 2015/07/14.
  */
 class LongestCommonSubsequence {
-    final String string0;
-    final String string1;
-    final int[][] dp;
+    private final String string0;
+    private final String string1;
+    private final int[][] dp;
 
     public LongestCommonSubsequence(String string0, String string1) {
         this.string0 = string0;

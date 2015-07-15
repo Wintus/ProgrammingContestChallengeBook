@@ -9,10 +9,10 @@ import java.util.stream.IntStream;
  * Created by Yuya on 2015/07/14.
  */
 public class RepeatedCombination {
-    int n, m;
-    int[] a; // number of each m items
-    int M;
-    int[][] dp;
+    private final int n, m;
+    private final int[] a; // number of each m items
+    private final int M;
+    private final int[][] dp;
 
     public RepeatedCombination(int[] a, int n, int m) {
         this.n = n;

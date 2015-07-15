@@ -8,7 +8,7 @@ import java.util.Scanner;
  * Created by Yuya on 2015/07/12.
  */
 public class BestCowLine {
-    String string;
+    private final String string;
 
     public BestCowLine(String string) {
         this.string = string;

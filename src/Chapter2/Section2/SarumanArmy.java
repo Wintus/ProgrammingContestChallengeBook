@@ -9,8 +9,8 @@ import java.util.stream.IntStream;
  * Created by Yuya on 2015/07/12.
  */
 public class SarumanArmy {
-    private int R;
-    private int[] points;
+    private final int R;
+    private final int[] points;
 
     public SarumanArmy(int r, int[] points) {
         R = r;

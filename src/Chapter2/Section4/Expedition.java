@@ -10,20 +10,18 @@ import java.util.stream.IntStream;
  * Created by Yuya on 2015/07/14.
  */
 class Expedition {
-    private final int L;
     private final int P;
     private final int n;
     private final int[][] stands; // {distance, gas}
 
     public Expedition(int l, int p, int[][] stands) {
-        L = l;
         P = p;
         n = stands.length;
         this.stands = new int[n + 1][2];
         IntStream.range(0, n).forEach(i ->
                 IntStream.range(0, 2).forEach(j ->
                         this.stands[i][j] = stands[i][j]));
-        this.stands[n] = new int[]{L, 0}; // add goal as the last stand
+        this.stands[n] = new int[]{l, 0}; // add goal as the last stand
     }
 
     int solve() {

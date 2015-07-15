@@ -12,8 +12,8 @@ class KnapsackProblem01_2 {
     private final int[][] items; // {{weight, value}}
     private final int weight;
     private final int[][] dp; // {{(nth item, value): weight}}
-    private int N;
-    private int V;
+    private final int N;
+    private final int V;
 
     public KnapsackProblem01_2(int[][] items, int weight) {
         this.items = items;
