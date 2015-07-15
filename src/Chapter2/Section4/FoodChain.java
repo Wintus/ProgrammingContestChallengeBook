@@ -1,5 +1,7 @@
 package Chapter2.Section4;
 
+import java.util.Arrays;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 /**
@@ -82,5 +84,16 @@ class FoodChain {
             }
         }
         return answer;
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int k = scanner.nextInt();
+            int[][] info = new int[k][3];
+            IntStream.range(0, k).forEach(i ->
+                    Arrays.setAll(info[i], x -> scanner.nextInt()));
+            System.out.println(new FoodChain(n, info).solve());
+        }
     }
 }
