@@ -1,6 +1,8 @@
 package Chapter2.Section4;
 
+import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.Scanner;
 
 /**
  * Using Huffman Coding.
@@ -26,5 +28,14 @@ public class FenceRepair {
             queue.add(b);
         }
         return answer;
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int[] boards = new int[n];
+            Arrays.setAll(boards, x -> scanner.nextInt());
+            System.out.println(new FenceRepair(boards).solve());
+        }
     }
 }
