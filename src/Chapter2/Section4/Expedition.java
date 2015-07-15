@@ -1,6 +1,8 @@
 package Chapter2.Section4;
 
+import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.Scanner;
 import java.util.stream.IntStream;
 
 /**
@@ -18,10 +20,10 @@ class Expedition {
         P = p;
         n = stands.length;
         this.stands = new int[n + 1][2];
-        IntStream.rangeClosed(0, n).forEach(i ->
-                IntStream.rangeClosed(0, n).forEach(j ->
+        IntStream.range(0, n).forEach(i ->
+                IntStream.range(0, 2).forEach(j ->
                         this.stands[i][j] = stands[i][j]));
-        stands[n] = new int[]{L, 0}; // add goal as the last stand
+        this.stands[n] = new int[]{L, 0}; // add goal as the last stand
     }
 
     int solve() {
@@ -40,5 +42,17 @@ class Expedition {
             queue.add(stands[i][1]);
         }
         return answer;
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int l = scanner.nextInt();
+            int p = scanner.nextInt();
+            int[][] stand = new int[n][2];
+            IntStream.range(0, n).forEach(i ->
+                    Arrays.setAll(stand[i], x -> scanner.nextInt()));
+            System.out.println(new Expedition(l, p, stand).solve());
+        }
     }
 }
