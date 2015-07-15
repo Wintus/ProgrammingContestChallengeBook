@@ -91,4 +91,8 @@ public class UnionFindTree<T extends Comparable<? super T>> {
             if (rootX.rank < rootY.rank) ++rootX.rank;
         }
     }
+
+    boolean isSame(T x, T y) {
+        return findRoot(getNode(x)) == findRoot(getNode(y));
+    }
 }
