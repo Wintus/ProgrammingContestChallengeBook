@@ -63,6 +63,16 @@ public class UnionFindTree<T extends Comparable<? super T>> {
         public boolean isParent() {
             return parent == null;
         }
+
+        private boolean isLeaf() {
+            return children.isEmpty();
+        }
+
+        public int getHeight() {
+            return isLeaf() ? 0 : 1 +
+                    children.stream()
+                            .mapToInt(Node::getHeight).max().getAsInt();
+        }
     }
 
     private Node<T> findRoot(Node<T> node) {
@@ -71,6 +81,7 @@ public class UnionFindTree<T extends Comparable<? super T>> {
         else {
             Node<T> parent = findRoot(node.getParent());
             node.setParent(parent);
+            parent.setRank(parent.getHeight());
             return parent;
         }
     }
