@@ -20,6 +20,8 @@ public class BipartiteGraphJudgement {
 
     /**
      * color: -1, 1
+     * invalid if any adj has the same color
+     * or paint all unpainted adj by the negative color.
      *
      * @param v vertex.
      * @param c color.
@@ -27,18 +29,16 @@ public class BipartiteGraphJudgement {
      */
     private boolean dfs(int v, int c) {
         color[v] = c;
-        for (Integer adj : graph.get(v)) {
-            if (color[adj] == c) return true;
-            if (color[adj] == 0 && dfs(adj, -c)) return true;
-        }
+        for (Integer adj : graph.get(v))
+            if (color[adj] == c || (color[adj] == 0 && dfs(adj, -c)))
+                return true;
         return false;
     }
 
     boolean solve() {
         for (int i = 0; i < V; i++)
-            if (color[i] == 0)
-                if (dfs(i, 1))
-                    return false;
+            if (color[i] == 0 && dfs(i, 1))
+                return false;
         return true;
     }
 
