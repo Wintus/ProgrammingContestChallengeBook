@@ -4,7 +4,9 @@ import java.util.function.UnaryOperator;
 
 /**
  * helper library.
- * http://thushw.blogspot.com/2010/07/why-am-i-writing-lowerbound-in-java.html
+ * Reference:
+ * <a href="http://thushw.blogspot.com/2010/07/why-am-i-writing-lowerbound-in-java.html">
+ *     Why am I writing lower_bound() in Java again?</a>
  * Created by Yuya on 2015/07/14.
  */
 public class Lookup {
