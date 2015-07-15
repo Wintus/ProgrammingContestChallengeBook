@@ -1,12 +1,20 @@
 package Library;
 
 import java.util.ArrayList;
+import java.util.Collection;
 
 /**
  * Generified.
  * Created by Yuya on 2015/07/15.
  */
 public class UnionFindTree<T extends Comparable<? super T>> {
+    private final ArrayList<Node<T>> trees;
+
+    public UnionFindTree(Collection<T> collection) {
+        trees = new ArrayList<>();
+        collection.forEach(t -> trees.add(new Node<>(t)));
+    }
+
     class Node<E extends Comparable<? super E>> {
         private E data;
         private E parent;
