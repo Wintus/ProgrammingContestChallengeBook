@@ -2,6 +2,8 @@ package Chapter2.Section4;
 
 /**
  * Using Union-Find Tree.
+ * 3 types of animal: A, B, C.
+ * Information:
  * Type 1: x and y is the same type.
  * Type 2: x eats y.
  * Created by Yuya on 2015/07/14.
