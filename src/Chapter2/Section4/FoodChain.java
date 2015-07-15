@@ -1,5 +1,7 @@
 package Chapter2.Section4;
 
+import java.util.stream.IntStream;
+
 /**
  * Using Union-Find Tree.
  * 3 types of animal: A, B, C.
@@ -8,9 +10,10 @@ package Chapter2.Section4;
  * Type 2: x eats y.
  * Created by Yuya on 2015/07/14.
  */
-public class FoodChain {
-    int N;
-    int[][] information; // {{type, x, y}}
+class FoodChain {
+    private final int N;
+    private final int[][] information; // {{type, x, y}}
+    private UnionFindTree data;
 
     public FoodChain(int n, int[][] information) {
         N = n;
@@ -18,7 +21,7 @@ public class FoodChain {
     }
 
     class UnionFindTree {
-        int[] parents, ranks;
+        final int[] parents, ranks;
 
         public UnionFindTree(int n) {
             parents = new int[n];
@@ -49,5 +52,35 @@ public class FoodChain {
         boolean isSame(int x, int y) {
             return find(x) == find(y);
         }
+    }
+
+    int solve() {
+        data = new UnionFindTree(N * 3); // x-A: x, x-B: x + N, x-C: x + 2 * N
+        int answer = 0;
+        for (int[] i : information) {
+            int type = i[0];
+            int x = i[1] - 1, y = i[2] - 1; // to index
+            // invalid index
+            if (x < 0 || N <= x || y < 0 || N <= y) {
+                ++answer;
+                continue;
+            }
+            // invalid: A = B, A = C
+            if (type == 1) {
+                if (data.isSame(x, y + N) || data.isSame(x, y + 2 * N))
+                    ++answer;
+                else
+                    IntStream.rangeClosed(0, 2)
+                             .forEach(n -> data.unite(x + n * N, y + n * N));
+            } else {
+                // invalid: A eats A, A eats C
+                if (data.isSame(x, y) || data.isSame(x, y + 2 * N))
+                    ++answer;
+                else
+                    IntStream.rangeClosed(0, 2)
+                             .forEach(n -> data.unite(x + n * N, y + n * N));
+            }
+        }
+        return answer;
     }
 }
