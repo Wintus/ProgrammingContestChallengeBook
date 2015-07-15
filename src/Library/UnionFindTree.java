@@ -17,8 +17,8 @@ public class UnionFindTree<T extends Comparable<? super T>> {
 
     class Node<E extends Comparable<? super E>> {
         private E data;
-        private E parent;
-        private ArrayList<E> children;
+        private Node<E> parent;
+        private ArrayList<Node<E>> children;
         private int rank;
 
         public Node(E data) {
@@ -36,19 +36,19 @@ public class UnionFindTree<T extends Comparable<? super T>> {
             this.data = data;
         }
 
-        public E getParent() {
+        public Node<E> getParent() {
             return parent;
         }
 
-        public void setParent(E parent) {
+        public void setParent(Node<E> parent) {
             this.parent = parent;
         }
 
-        public ArrayList<E> getChildren() {
+        public ArrayList<Node<E>> getChildren() {
             return children;
         }
 
-        public void setChildren(ArrayList<E> children) {
+        public void setChildren(ArrayList<Node<E>> children) {
             this.children = children;
         }
 
@@ -65,13 +65,11 @@ public class UnionFindTree<T extends Comparable<? super T>> {
         }
     }
 
-    T findRoot(T t) {
-        Node<T> node = trees.stream()
-                            .filter(n -> n.getData() == t).findFirst().get();
+    private Node<T> findRoot(Node<T> node) {
         if (node.isParent())
-            return t;
+            return node;
         else {
-            T parent = findRoot(node.getParent());
+            Node<T> parent = findRoot(node.getParent());
             node.setParent(parent);
             return parent;
         }
