@@ -8,7 +8,7 @@ import java.util.*;
  */
 public class ShortestPathProblem {
     private final ArrayList<Edge> edges;
-    private final int[] distance;
+    private final int[] distances;
     private final int V;
     private final int INF = Integer.MAX_VALUE / 2;
 
@@ -25,7 +25,7 @@ public class ShortestPathProblem {
     public ShortestPathProblem(ArrayList<Edge> edges, int v) {
         this.edges = edges;
         V = v;
-        distance = new int[V];
+        distances = new int[V];
     }
 
     public ShortestPathProblem() {
@@ -33,7 +33,7 @@ public class ShortestPathProblem {
         initialize();
 //        V = edges.parallelStream().mapToInt(edge -> edge.from).max().getAsInt();
         V = 7;
-        distance = new int[V];
+        distances = new int[V];
     }
 
     void initialize() {
@@ -63,14 +63,14 @@ public class ShortestPathProblem {
      * find the shortest path by Bellman-Ford method.
      */
     void bellman_ford(int s) {
-        Arrays.fill(distance, INF);
-        distance[s] = 0;
+        Arrays.fill(distances, INF);
+        distances[s] = 0;
         while (true) {
             boolean updated = false;
             for (Edge edge : edges) {
-                int cost = distance[edge.from] + edge.cost;
-                if (distance[edge.from] != INF && distance[edge.to] > cost) {
-                    distance[edge.to] = cost;
+                int cost = distances[edge.from] + edge.cost;
+                if (distances[edge.from] != INF && distances[edge.to] > cost) {
+                    distances[edge.to] = cost;
                     updated = true;
                 }
             }
@@ -79,12 +79,12 @@ public class ShortestPathProblem {
     }
 
     boolean detect_negative_loop() {
-        Arrays.fill(distance, 0);
+        Arrays.fill(distances, 0);
         for (int i = 0; i < V; i++) {
             for (Edge edge : edges) {
-                int cost = distance[edge.from] + edge.cost;
-                if (distance[edge.to] > cost) {
-                    distance[edge.to] = cost;
+                int cost = distances[edge.from] + edge.cost;
+                if (distances[edge.to] > cost) {
+                    distances[edge.to] = cost;
                     if (i == V - 1) return true;
                 }
             }
@@ -107,20 +107,20 @@ public class ShortestPathProblem {
         PriorityQueue<Pair<Integer, Integer>> queue =
                 new PriorityQueue<>((o1, o2) ->
                         Integer.compare(o1.getValue(), o2.getValue()));
-        Arrays.fill(distance, INF);
-        distance[start] = 0;
+        Arrays.fill(distances, INF);
+        distances[start] = 0;
         // (v, min_dis)
         queue.add(new Pair<>(start, 0));
         while (!queue.isEmpty()) {
             Map.Entry<Integer, Integer> poll = queue.poll();
             int vertex = poll.getKey();
-            if (distance[vertex] < poll.getValue()) continue;
+            if (distances[vertex] < poll.getValue()) continue;
             edges.stream().filter(edge -> edge.from == vertex) // parallel
                  .forEach(edge -> {
-                     int cost = distance[vertex] + edge.cost;
-                     if (distance[edge.to] > cost) {
-                         distance[edge.to] = cost;
-                         queue.add(new Pair<>(edge.to, distance[edge.to]));
+                     int cost = distances[vertex] + edge.cost;
+                     if (distances[edge.to] > cost) {
+                         distances[edge.to] = cost;
+                         queue.add(new Pair<>(edge.to, distances[edge.to]));
                      }
                  });
         }
@@ -130,12 +130,12 @@ public class ShortestPathProblem {
         ShortestPathProblem spp = new ShortestPathProblem();
         System.out.println("INF = " + spp.INF);
         spp.bellman_ford(0);
-        System.out.println(Arrays.toString(spp.distance));
-        System.out.println(spp.distance[spp.distance.length - 1]);
+        System.out.println(Arrays.toString(spp.distances));
+        System.out.println(spp.distances[spp.distances.length - 1]);
         System.out.println("Negative Loop?: " + spp.detect_negative_loop());
         System.out.println();
         spp.dijkstra(0);
-        System.out.println(Arrays.toString(spp.distance));
-        System.out.println(spp.distance[spp.distance.length - 1]);
+        System.out.println(Arrays.toString(spp.distances));
+        System.out.println(spp.distances[spp.distances.length - 1]);
     }
 }
