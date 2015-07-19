@@ -35,6 +35,7 @@ public class MinimumSpanningTree {
     public MinimumSpanningTree() {
         edges = new ArrayList<>();
         initialize();
+        V = 7;
         min_cost = new int[V];
         used = new boolean[V];
     }
@@ -64,7 +65,7 @@ public class MinimumSpanningTree {
         PriorityQueue<Edge> queue =
                 new PriorityQueue<>(
                         (o1, o2) -> Integer.compare(
-                                min_cost[o1.cost], min_cost[o2.cost]));
+                                min_cost[o1.from], min_cost[o2.from]));
         queue.addAll(edges);
         Arrays.fill(min_cost, INF);
         Arrays.fill(used, false);
@@ -79,5 +80,10 @@ public class MinimumSpanningTree {
                     min_cost[edge.to] = Math.min(min_cost[edge.to], edge.cost));
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        MinimumSpanningTree mst = new MinimumSpanningTree();
+        System.out.println(mst.prim());
     }
 }
