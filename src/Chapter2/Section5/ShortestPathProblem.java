@@ -115,14 +115,15 @@ public class ShortestPathProblem {
             Map.Entry<Integer, Integer> poll = queue.poll();
             int vertex = poll.getKey();
             if (distances[vertex] < poll.getValue()) continue;
-            edges.stream().filter(edge -> edge.from == vertex) // parallel
-                 .forEach(edge -> {
-                     int cost = distances[vertex] + edge.cost;
-                     if (distances[edge.to] > cost) {
-                         distances[edge.to] = cost;
-                         queue.add(new Pair<>(edge.to, distances[edge.to]));
-                     }
-                 });
+            edges.stream()
+                    .filter(edge -> edge.from == vertex) // parallel
+                    .forEach(edge -> {
+                        int cost = distances[vertex] + edge.cost;
+                        if (distances[edge.to] > cost) {
+                            distances[edge.to] = cost;
+                            queue.add(new Pair<>(edge.to, distances[edge.to]));
+                        }
+                    });
         }
     }
 
@@ -143,15 +144,19 @@ public class ShortestPathProblem {
     public static void main(String[] args) {
         ShortestPathProblem spp = new ShortestPathProblem();
         System.out.println("INF = " + spp.INF);
+        System.out.println();
+
         spp.bellman_ford(0);
         System.out.println(Arrays.toString(spp.distances));
         System.out.println(spp.distances[spp.distances.length - 1]);
         System.out.println("Negative Loop?: " + spp.detect_negative_loop());
         System.out.println();
+
         spp.dijkstra(0);
         System.out.println(Arrays.toString(spp.distances));
         System.out.println(spp.distances[spp.distances.length - 1]);
         System.out.println();
+
         for (int[] row : spp.warshall_floyd())
             System.out.println(Arrays.toString(row));
     }
