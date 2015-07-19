@@ -126,6 +126,20 @@ public class ShortestPathProblem {
         }
     }
 
+    int[][] warshall_floyd() {
+        int[][] dp = new int[V][V];
+        for (int i = 0; i < V; i++) {
+            Arrays.fill(dp[i], INF);
+            dp[i][i] = 0;
+        }
+        edges.forEach(edge -> dp[edge.from][edge.to] = edge.cost);
+        for (int k = 0; k < V; k++)
+            for (int i = 0; i < V; i++)
+                for (int j = 0; j < V; j++)
+                    dp[i][j] = Math.min(dp[i][j], dp[i][k] + dp[k][j]);
+        return dp;
+    }
+
     public static void main(String[] args) {
         ShortestPathProblem spp = new ShortestPathProblem();
         System.out.println("INF = " + spp.INF);
@@ -137,5 +151,8 @@ public class ShortestPathProblem {
         spp.dijkstra(0);
         System.out.println(Arrays.toString(spp.distances));
         System.out.println(spp.distances[spp.distances.length - 1]);
+        System.out.println();
+        for (int[] row : spp.warshall_floyd())
+            System.out.println(Arrays.toString(row));
     }
 }
