@@ -11,6 +11,7 @@ public class ShortestPathProblem {
     private final int[] distances;
     private final int V;
     private final int INF = Integer.MAX_VALUE / 2;
+    private int[] previous;
 
     class Edge {
         final int from, to, cost;
@@ -108,6 +109,8 @@ public class ShortestPathProblem {
                 new PriorityQueue<>((o1, o2) ->
                         Integer.compare(o1.getValue(), o2.getValue()));
         Arrays.fill(distances, INF);
+        previous = new int[V];
+        Arrays.fill(previous, -1);
         distances[start] = 0;
         // (v, min_dis)
         queue.add(new Pair<>(start, 0));
@@ -122,6 +125,7 @@ public class ShortestPathProblem {
                         if (distances[edge.to] > cost) {
                             distances[edge.to] = cost;
                             queue.add(new Pair<>(edge.to, distances[edge.to]));
+                            previous[edge.to] = vertex;
                         }
                     });
         }
@@ -141,6 +145,13 @@ public class ShortestPathProblem {
         return dp;
     }
 
+    ArrayList<Integer> get_path(int target) {
+        ArrayList<Integer> path = new ArrayList<>();
+        for (; target != -1; target = previous[target]) path.add(target);
+        Collections.reverse(path);
+        return path;
+    }
+
     public static void main(String[] args) {
         ShortestPathProblem spp = new ShortestPathProblem();
         System.out.println("INF = " + spp.INF);
@@ -155,9 +166,17 @@ public class ShortestPathProblem {
         spp.dijkstra(0);
         System.out.println(Arrays.toString(spp.distances));
         System.out.println(spp.distances[spp.distances.length - 1]);
+        System.out.println(
+                spp.get_path(6).stream()
+                   .mapToInt(i -> 'A' + i)
+                   .collect(StringBuilder::new,
+                           StringBuilder::appendCodePoint,
+                           StringBuilder::append)
+                   .toString());
         System.out.println();
 
         for (int[] row : spp.warshall_floyd())
             System.out.println(Arrays.toString(row));
+        System.out.println();
     }
 }
