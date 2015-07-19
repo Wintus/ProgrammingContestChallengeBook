@@ -59,4 +59,23 @@ public class ShortestPathProblem {
         edges.add(new Edge(6, 4, 5));
         edges.add(new Edge(6, 5, 9));
     }
+
+    /**
+     * find the shortest path by Bellman-Ford method.
+     */
+    void bellman_ford(int s) {
+        Arrays.fill(distance, INF);
+        distance[s] = 0;
+        while (true) {
+            boolean updated = false;
+            for (Edge edge : edges) {
+                int cost = distance[edge.from] + edge.cost;
+                if (distance[edge.from] != INF && distance[edge.to] > cost) {
+                    distance[edge.to] = cost;
+                    updated = true;
+                }
+            }
+            if (!updated) break;
+        }
+    }
 }
