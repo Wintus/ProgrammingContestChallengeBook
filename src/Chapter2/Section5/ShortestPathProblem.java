@@ -1,7 +1,6 @@
 package Chapter2.Section5;
 
-import java.util.ArrayList;
-import java.util.Arrays;
+import java.util.*;
 
 /**
  * Shortest Path Problem Exercise.
@@ -93,6 +92,40 @@ public class ShortestPathProblem {
         return false;
     }
 
+    class Pair<K, V> extends HashMap.SimpleImmutableEntry<K, V> {
+        public Pair(K key, V value) {
+            super(key, value);
+        }
+    }
+
+    /**
+     * for non-negative-cost graph
+     *
+     * @param start start vertex.
+     */
+    void dijkstra(int start) {
+        PriorityQueue<Pair<Integer, Integer>> queue =
+                new PriorityQueue<>((o1, o2) ->
+                        Integer.compare(o1.getValue(), o2.getValue()));
+        Arrays.fill(distance, INF);
+        distance[start] = 0;
+        // (v, min_dis)
+        queue.add(new Pair<>(start, 0));
+        while (!queue.isEmpty()) {
+            Map.Entry<Integer, Integer> poll = queue.poll();
+            int vertex = poll.getKey();
+            if (distance[vertex] < poll.getValue()) continue;
+            edges.stream().filter(edge -> edge.from == vertex) // parallel
+                 .forEach(edge -> {
+                     int cost = distance[vertex] + edge.cost;
+                     if (distance[edge.to] > cost) {
+                         distance[edge.to] = cost;
+                         queue.add(new Pair<>(edge.to, distance[edge.to]));
+                     }
+                 });
+        }
+    }
+
     public static void main(String[] args) {
         ShortestPathProblem spp = new ShortestPathProblem();
         System.out.println("INF = " + spp.INF);
@@ -100,5 +133,9 @@ public class ShortestPathProblem {
         System.out.println(Arrays.toString(spp.distance));
         System.out.println(spp.distance[spp.distance.length - 1]);
         System.out.println("Negative Loop?: " + spp.detect_negative_loop());
+        System.out.println();
+        spp.dijkstra(0);
+        System.out.println(Arrays.toString(spp.distance));
+        System.out.println(spp.distance[spp.distance.length - 1]);
     }
 }
