@@ -1,6 +1,8 @@
 package Chapter2.Section5;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.PriorityQueue;
 
 /**
  * Spanning Tree problem. Graph is connected.
@@ -21,6 +23,7 @@ public class MinimumSpanningTree {
     private int[] min_cost;
     private boolean[] used;
     private int V;
+    private static final int INF = Integer.MAX_VALUE / 2;
 
     public MinimumSpanningTree(ArrayList<Edge> edges, int v) {
         this.edges = edges;
@@ -55,5 +58,26 @@ public class MinimumSpanningTree {
         edges.add(new Edge(5, 6, 8));
         edges.add(new Edge(6, 3, 5));
         edges.add(new Edge(6, 5, 8));
+    }
+
+    int prim() {
+        PriorityQueue<Edge> queue =
+                new PriorityQueue<>(
+                        (o1, o2) -> Integer.compare(
+                                min_cost[o1.cost], min_cost[o2.cost]));
+        queue.addAll(edges);
+        Arrays.fill(min_cost, INF);
+        Arrays.fill(used, false);
+        min_cost[0] = 0;
+        int result = 0;
+        while (!queue.isEmpty()) {
+            Edge poll = queue.poll();
+            int vertex = poll.from;
+            used[vertex] = true;
+            result += min_cost[vertex];
+            edges.forEach(edge ->
+                    min_cost[edge.to] = Math.min(min_cost[edge.to], edge.cost));
+        }
+        return result;
     }
 }
