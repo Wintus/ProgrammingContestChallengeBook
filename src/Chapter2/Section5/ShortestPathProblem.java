@@ -79,11 +79,26 @@ public class ShortestPathProblem {
         }
     }
 
+    boolean detect_negative_loop() {
+        Arrays.fill(distance, 0);
+        for (int i = 0; i < V; i++) {
+            for (Edge edge : edges) {
+                int cost = distance[edge.from] + edge.cost;
+                if (distance[edge.to] > cost) {
+                    distance[edge.to] = cost;
+                    if (i == V - 1) return true;
+                }
+            }
+        }
+        return false;
+    }
+
     public static void main(String[] args) {
         ShortestPathProblem spp = new ShortestPathProblem();
         System.out.println("INF = " + spp.INF);
         spp.bellman_ford(0);
         System.out.println(Arrays.toString(spp.distance));
         System.out.println(spp.distance[spp.distance.length - 1]);
+        System.out.println("Negative Loop?: " + spp.detect_negative_loop());
     }
 }
