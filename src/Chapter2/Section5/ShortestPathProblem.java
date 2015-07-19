@@ -78,4 +78,12 @@ public class ShortestPathProblem {
             if (!updated) break;
         }
     }
+
+    public static void main(String[] args) {
+        ShortestPathProblem spp = new ShortestPathProblem();
+        System.out.println("INF = " + spp.INF);
+        spp.bellman_ford(0);
+        System.out.println(Arrays.toString(spp.distance));
+        System.out.println(spp.distance[spp.distance.length - 1]);
+    }
 }
