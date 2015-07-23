@@ -69,6 +69,11 @@ public class MinimumSpanningTree {
         edges.add(new Edge(6, 5, 8));
     }
 
+    /**
+     * Get MST in O(E log V) using PriorityQueue.
+     *
+     * @return sum of all edges' costs.
+     */
     int prim() {
         PriorityQueue<Edge> queue = new PriorityQueue<>((e0, e1) ->
                 Integer.compare(e0.cost, e1.cost));
