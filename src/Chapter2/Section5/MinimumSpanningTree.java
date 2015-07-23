@@ -80,17 +80,15 @@ public class MinimumSpanningTree {
         Arrays.fill(used, false);
         used[0] = true;
         edges.stream().filter(edge -> edge.from == 0).forEach(queue::add);
-        int result = 0;
         while (!queue.isEmpty()) {
             Edge poll = queue.poll();
             if (used[poll.to]) continue;
             mst.add(poll);
             used[poll.to] = true;
-            result += poll.cost;
             edges.stream().filter(edge -> edge.from == poll.to)
                  .forEach(queue::add);
         }
-        return result;
+        return mst.stream().mapToInt(edge -> edge.cost).sum();
     }
 
     public static void main(String[] args) {
