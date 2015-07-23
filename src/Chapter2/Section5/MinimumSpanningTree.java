@@ -2,6 +2,7 @@ package Chapter2.Section5;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.PriorityQueue;
 
 /**
  * Spanning Tree problem. Graph is connected.
@@ -16,9 +17,15 @@ public class MinimumSpanningTree {
             this.to = to;
             this.cost = cost;
         }
+
+        @Override
+        public String toString() {
+            return from + " -> " + to + ": " + cost;
+        }
     }
 
     private ArrayList<Edge> edges;
+    private ArrayList<Edge> mst;
     private int[] min_cost;
     private boolean[] used;
     private int V;
@@ -29,6 +36,7 @@ public class MinimumSpanningTree {
         V = v;
         min_cost = new int[V];
         used = new boolean[V];
+        mst = new ArrayList<>();
     }
 
     public MinimumSpanningTree() {
@@ -37,6 +45,7 @@ public class MinimumSpanningTree {
         V = 7;
         min_cost = new int[V];
         used = new boolean[V];
+        mst = new ArrayList<>();
     }
 
     private void initialize() {
@@ -61,24 +70,20 @@ public class MinimumSpanningTree {
     }
 
     int prim() {
-        Arrays.fill(min_cost, INF);
+        PriorityQueue<Edge> queue = new PriorityQueue<>((e0, e1) ->
+                Integer.compare(e0.cost, e1.cost));
         Arrays.fill(used, false);
-        int[][] cost = new int[V][V];
-        for (int[] row : cost) Arrays.fill(row, INF);
-        edges.forEach(edge -> cost[edge.from][edge.to] = edge.cost);
-        min_cost[0] = 0;
+        used[0] = true;
+        edges.stream().filter(edge -> edge.from == 0).forEach(queue::add);
         int result = 0;
-        while (true) {
-            int vertex = -1;
-            for (int v = 0; v < V; v++)
-                if (!used[v] &&
-                        (vertex == -1 || min_cost[v] < min_cost[vertex]))
-                    vertex = v;
-            if (vertex == -1) break;
-            used[vertex] = true;
-            result += min_cost[vertex];
-            for (int v = 0; v < V; v++)
-                min_cost[v] = Math.min(min_cost[v], cost[vertex][v]);
+        while (!queue.isEmpty()) {
+            Edge poll = queue.poll();
+            if (used[poll.to]) continue;
+            mst.add(poll);
+            used[poll.to] = true;
+            result += poll.cost;
+            edges.stream().filter(edge -> edge.from == poll.to)
+                 .forEach(queue::add);
         }
         return result;
     }
@@ -86,5 +91,6 @@ public class MinimumSpanningTree {
     public static void main(String[] args) {
         MinimumSpanningTree mst = new MinimumSpanningTree();
         System.out.println(mst.prim());
+        System.out.println(mst.mst.toString());
     }
 }
