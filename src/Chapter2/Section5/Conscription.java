@@ -2,6 +2,7 @@ package Chapter2.Section5;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.Scanner;
 import java.util.stream.Collectors;
 
 /**
@@ -57,7 +58,9 @@ public class Conscription {
 
     }
 
-    private int N, M, V;
+    private final int N;
+    private final int M;
+    private final int V;
     private ArrayList<Edge> edges;
     private ArrayList<Edge> mst;
 
@@ -73,7 +76,7 @@ public class Conscription {
      *
      * @return total cost of the MST.
      */
-    int kruskal() {
+    private int kruskal() {
         mst = new ArrayList<>();
         Collections.sort(edges, (e0, e1) -> Integer.compare(e0.cost, e1.cost));
         UnionFindTree uft = new UnionFindTree(V);
@@ -91,5 +94,21 @@ public class Conscription {
                 new Edge(edge.from, N + edge.to, -edge.cost))
                      .collect(Collectors.toCollection(ArrayList::new));
         return 10000 * (N + M) + kruskal();
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+            int r = scanner.nextInt();
+            ArrayList<Edge> edges = new ArrayList<>(r);
+            for (int i = 0; i < r; i++)
+                edges.add(new Edge(
+                        scanner.nextInt(),
+                        scanner.nextInt(),
+                        scanner.nextInt()));
+            Conscription conscription = new Conscription(n, m, edges);
+            System.out.println(conscription.solve());
+        }
     }
 }
