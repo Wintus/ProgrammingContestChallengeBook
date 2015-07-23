@@ -3,13 +3,14 @@ package Chapter2.Section5;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.PriorityQueue;
+import java.util.Scanner;
 
 /**
  * Graph algorithm.
  * Created by Yuya on 2015/07/22.
  */
 public class Roadblocks {
-    class Edge {
+    static class Edge {
         final int from, to, cost;
 
         public Edge(int from, int to, int cost) {
@@ -45,14 +46,14 @@ public class Roadblocks {
             edges.stream().filter(edge -> edge.from == v)
                  .forEach(edge -> {
                      int d2 = poll.cost + edge.cost;
-                     if (distance[edge.to] > d2) {
+                     if (d2 < distance[edge.to]) {
                          // swap
                          int dummy = distance[edge.to];
                          distance[edge.to] = d2;
                          d2 = dummy;
                          queue.add(new Edge(-1, edge.to, distance[edge.to]));
                      }
-                     if (distance2[edge.to] > d2 && distance[edge.to] < d2) {
+                     if (distance[edge.to] < d2 && d2 < distance2[edge.to]) {
                          distance2[edge.to] = d2;
                          queue.add(new Edge(-1, edge.to, distance2[edge.to]));
                      }
@@ -60,5 +61,28 @@ public class Roadblocks {
         }
 
         return distance2[distance2.length - 1];
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int r = scanner.nextInt();
+            ArrayList<Edge> edges = new ArrayList<>(r * 2);
+            for (int i = 0; i < r * 2; i++)
+                edges.add(new Edge(
+                        scanner.nextInt(),
+                        scanner.nextInt(),
+                        scanner.nextInt()));
+/*
+            ArrayList<Edge> edges =
+                    IntStream.range(0, r * 2).mapToObj(i -> new Edge(
+                            scanner.nextInt(),
+                            scanner.nextInt(),
+                            scanner.nextInt()))
+                             .collect(Collectors.toCollection(ArrayList::new));
+*/
+            Roadblocks roadblocks = new Roadblocks(n, edges);
+            System.out.println(roadblocks.solve());
+        }
     }
 }
