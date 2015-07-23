@@ -2,6 +2,7 @@ package Chapter2.Section5;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.PriorityQueue;
 
 /**
@@ -24,17 +25,48 @@ public class MinimumSpanningTree {
         }
     }
 
+    class UnionFindTree {
+        final int[] parents, ranks;
+
+        public UnionFindTree(int n) {
+            parents = new int[n];
+            ranks = new int[n];
+            for (int i = 0; i < n; i++) {
+                parents[i] = i;
+                ranks[i] = 0;
+            }
+        }
+
+        int find(int i) {
+            if (parents[i] == i) return i;
+            else return parents[i] = find(parents[i]);
+        }
+
+        void unite(int x, int y) {
+            int rootX = find(x);
+            int rootY = find(y);
+            if (rootX == rootY) return;
+            if (ranks[rootX] < ranks[rootY]) {
+                parents[rootX] = rootY;
+            } else {
+                parents[rootY] = rootX;
+                if (ranks[rootX] == ranks[rootY]) ranks[rootX]++;
+            }
+        }
+
+        boolean isConnected(int x, int y) {
+            return find(x) == find(y);
+        }
+    }
+
     private ArrayList<Edge> edges;
     private ArrayList<Edge> mst;
-    private int[] min_cost;
     private boolean[] used;
     private int V;
-    private static final int INF = Integer.MAX_VALUE / 2;
 
     public MinimumSpanningTree(ArrayList<Edge> edges, int v) {
         this.edges = edges;
         V = v;
-        min_cost = new int[V];
         used = new boolean[V];
     }
 
@@ -42,7 +74,6 @@ public class MinimumSpanningTree {
         edges = new ArrayList<>();
         initialize();
         V = 7;
-        min_cost = new int[V];
         used = new boolean[V];
     }
 
@@ -90,9 +121,30 @@ public class MinimumSpanningTree {
         return mst.stream().mapToInt(edge -> edge.cost).sum();
     }
 
+    /**
+     * Get MST in O(E log V) using UnionFindTree.
+     *
+     * @return total cost of the MST.
+     */
+    int kruskal() {
+        mst = new ArrayList<>();
+        Collections.sort(edges, (e0, e1) -> Integer.compare(e0.cost, e1.cost));
+        UnionFindTree uft = new UnionFindTree(V);
+        edges.forEach(edge -> {
+            if (!uft.isConnected(edge.from, edge.to)) {
+                uft.unite(edge.from, edge.to);
+                mst.add(edge);
+            }
+        });
+        return mst.stream().mapToInt(edge -> edge.cost).sum();
+    }
+
     public static void main(String[] args) {
         MinimumSpanningTree mst = new MinimumSpanningTree();
         System.out.println(mst.prim());
-        System.out.println(mst.mst.toString());
+        System.out.println(mst.mst);
+        System.out.println();
+        System.out.println(mst.kruskal());
+        System.out.println(mst.mst);
     }
 }
