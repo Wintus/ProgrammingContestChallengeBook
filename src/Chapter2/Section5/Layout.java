@@ -7,10 +7,11 @@ import java.util.Scanner;
  * Use Bellman Ford.
  * Created by Yuya on 2015/07/23.
  */
-public class Layout {
-    private int N;
-    private int[] distances;
-    private int[][] likes, hates; // {{from, to, distances}}
+class Layout {
+    private final int N;
+    private final int[] distances;
+    private final int[][] likes;
+    private final int[][] hates; // {{from, to, distances}}
     private static final int INF = Integer.MAX_VALUE / 2;
 
     public Layout(int n, int[][] likes, int[][] hates) {
@@ -58,11 +59,9 @@ public class Layout {
             int[][] likes = new int[l][3];
             int[][] hates = new int[h][3];
             for (int[] like : likes)
-                for (int i = 0; i < 3; i++)
-                    like[i] = scanner.nextInt();
+                Arrays.setAll(like, x -> scanner.nextInt());
             for (int[] hate : hates)
-                for (int i = 0; i < 3; i++)
-                    hate[i] = scanner.nextInt();
+                Arrays.setAll(hate, x -> scanner.nextInt());
             Layout layout = new Layout(n, likes, hates);
             System.out.println(layout.solve());
         }
