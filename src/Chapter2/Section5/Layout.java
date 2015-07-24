@@ -1,6 +1,7 @@
 package Chapter2.Section5;
 
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Use Bellman Ford.
@@ -47,5 +48,23 @@ public class Layout {
             return -2;
         else
             return distances[N - 1];
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int l = scanner.nextInt();
+            int h = scanner.nextInt();
+            int[][] likes = new int[l][3];
+            int[][] hates = new int[h][3];
+            for (int[] like : likes)
+                for (int i = 0; i < 3; i++)
+                    like[i] = scanner.nextInt();
+            for (int[] hate : hates)
+                for (int i = 0; i < 3; i++)
+                    hate[i] = scanner.nextInt();
+            Layout layout = new Layout(n, likes, hates);
+            System.out.println(layout.solve());
+        }
     }
 }
