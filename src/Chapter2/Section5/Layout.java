@@ -21,6 +21,12 @@ class Layout {
         distances = new int[N];
     }
 
+    /**
+     * v -> u: w = d[v] + w >= d[u].
+     *
+     * @return max distance between 1st and last cow.
+     * -1 if not it exists. -2 if it is infinity.
+     */
     int solve() {
         Arrays.fill(distances, INF);
         distances[0] = 0;
