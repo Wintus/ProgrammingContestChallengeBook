@@ -9,6 +9,14 @@ import java.util.function.Consumer;
  * Created by Yuya on 2015/07/26.
  */
 public class Timer<T> {
+
+    /**
+     * measure elapsed time.
+     *
+     * @param t        value.
+     * @param consumer function.
+     * @return elapsed time in nano seconds.
+     */
     public long run(T t, Consumer<T> consumer) {
         long start = System.nanoTime();
         consumer.accept(t);
