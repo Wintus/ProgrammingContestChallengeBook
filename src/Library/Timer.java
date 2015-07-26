@@ -1,7 +1,7 @@
 package Library;
 
 import java.text.NumberFormat;
-import java.util.Locale;
+import java.util.*;
 import java.util.function.Consumer;
 
 /**
@@ -25,17 +25,26 @@ public class Timer<T> {
     }
 
     public static void main(String[] args) {
-        Timer<Integer> timer = new Timer<>();
-        long time = timer.run(0, i -> System.out.println("Timer"));
-        String format = NumberFormat.getNumberInstance(Locale.US).format(time);
-        System.out.println(format + " ns");
+        Timer<Object> timer = new Timer<>();
+        String format;
+
+        // measure in ƒÊs
+        long time0 = timer.run(0, i -> System.out.println("Timer")) / 1000;
+        format = NumberFormat.getNumberInstance(Locale.US).format(time0);
+        System.out.println(format + "\u00B5s");
         System.out.println();
 
         long start = System.nanoTime();
         System.out.println("Timer");
         long end = System.nanoTime();
-        time = end - start;
-        format = NumberFormat.getNumberInstance(Locale.US).format(time);
-        System.out.println(format + " ns");
+        long time1 = end - start;
+        time1 /= 1000;
+        format = NumberFormat.getNumberInstance(Locale.US).format(time1);
+        System.out.println(format + "\u00B5s");
+        System.out.println();
+
+        long d = Math.abs(time0 - time1);
+        System.out.println("Diff: " + d + "\u00B5s");
+        System.out.println();
     }
 }
