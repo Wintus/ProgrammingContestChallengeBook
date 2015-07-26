@@ -28,13 +28,20 @@ public class Timer<T> {
         return end - start;
     }
 
+    /**
+     * minimal no-op consumer
+     */
+    // @formatter:off
+    public static final Consumer<Object> NOP = whatever -> {};
+    // @formatter:on
+
     public static void main(String[] args) {
         Timer<Object> timer = new Timer<>();
-        Function<Long, String> formatter = n ->
-                NumberFormat.getNumberInstance(Locale.US).format(n);
+        Function<Long, String> formatter =
+                NumberFormat.getNumberInstance(Locale.US)::format;
 
         // measure in ƒÊs
-        long time0 = timer.run(0, i -> System.out.println("Timer")) / 1000;
+        long time0 = timer.run(null, x -> System.out.println("Timer")) / 1000;
         System.out.println(time0 + "\u00B5s");
         System.out.println();
 
@@ -54,16 +61,15 @@ public class Timer<T> {
         System.out.println("Measure time (ns) = count");
         SortedMap<Long, Integer> times = new TreeMap<>();
         SortedMap<Long, Integer> runs = new TreeMap<>();
+        Counter<Long> counter = new Counter<>();
         for (int i = 0; i < 1000; i++) {
             start = System.nanoTime();
             end = System.nanoTime();
             d = end - start;
-            times.put(d, times.getOrDefault(d, 0) + 1);
-            // @formatter:off
-            d = timer.run(0, o -> {}); // minimal consumer of no-op
-            runs.put(d, times.getOrDefault(d, 0) + 1);
+            counter.count(times, d);
+            d = timer.run(null, NOP);
+            counter.count(runs, d);
         }
-        // @formatter:on
         String t = times.entrySet().stream()
                         .map(entry -> formatter.apply(entry.getKey()) +
                                 "=" + entry.getValue())
