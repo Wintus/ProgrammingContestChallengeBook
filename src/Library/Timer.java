@@ -3,10 +3,10 @@ package Library;
 import java.text.NumberFormat;
 import java.util.Locale;
 import java.util.SortedMap;
-import java.util.StringJoiner;
 import java.util.TreeMap;
 import java.util.function.Consumer;
 import java.util.function.Function;
+import java.util.stream.Collectors;
 
 /**
  * Performance measure.
@@ -63,12 +63,15 @@ public class Timer<T> {
             d = timer.run(0, o -> {}); // minimal consumer of no-op
             runs.put(d, times.getOrDefault(d, 0) + 1);
         }
-        StringJoiner t = new StringJoiner("; ", "[", "]");
-        StringJoiner r = new StringJoiner("; ", "[", "]");
-        times.forEach((time, count) ->
-                t.add(formatter.apply(time) + "=" + count));
-        runs.forEach((time, count) ->
-                r.add(formatter.apply(time) + "=" + count));
+        // @formatter:on
+        String t = times.entrySet().stream()
+                        .map(entry -> formatter.apply(entry.getKey()) +
+                                "=" + entry.getValue())
+                        .collect(Collectors.joining("; ", "[", "]"));
+        String r = runs.entrySet().stream()
+                       .map(entry -> formatter.apply(entry.getKey()) +
+                               "=" + entry.getValue())
+                       .collect(Collectors.joining("; ", "[", "]"));
         System.out.println("times:\t" + t); // < .5-5ms
         System.out.println("runs:\t" + r); // < 5-30ms
     }
