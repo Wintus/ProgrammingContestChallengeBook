@@ -99,23 +99,23 @@ public class CarmichaelNumber {
             System.out.println();
 
             // show in É s
-            Timer<Integer> timer = new Timer<>();
+            Timer<Object> timer = new Timer<>();
             long time;
-            time = timer.run(0, x ->
-                    System.out.println(solve(n) ? "Yes" : "No"));
-            System.out.println((time / 1000) + "\u00B5s\n");
-            time = timer.run(0, x ->
-                    System.out.println(solve1(n) ? "Yes" : "No"));
-            System.out.println((time / 1000) + "\u00B5s\n");
-            time = timer.run(0, x ->
-                    System.out.println(solveBig(n) ? "Yes" : "No"));
-            System.out.println((time / 1000) + "\u00B5s\n");
-            time = timer.run(0, x ->
-                    System.out.println(solveBig1(n) ? "Yes" : "No"));
-            System.out.println((time / 1000) + "\u00B5s\n");
-            time = timer.run(0, x ->
-                    System.out.println(solveBig0(n) ? "Yes" : "No"));
-            System.out.println((time / 1000) + "\u00B5s\n");
+            time = timer.run(null, x ->
+                    System.out.print(solve(n) ? "Yes" : "No"));
+            System.out.println(" " + (time / 1000) + "\u00B5s");
+            time = timer.run(null, x ->
+                    System.out.print(solve1(n) ? "Yes" : "No"));
+            System.out.println(" " + (time / 1000) + "\u00B5s");
+            time = timer.run(null, x ->
+                    System.out.print(solveBig(n) ? "Yes" : "No"));
+            System.out.println(" " + (time / 1000) + "\u00B5s");
+            time = timer.run(null, x ->
+                    System.out.print(solveBig1(n) ? "Yes" : "No"));
+            System.out.println(" " + (time / 1000) + "\u00B5s");
+            time = timer.run(null, x ->
+                    System.out.print(solveBig0(n) ? "Yes" : "No"));
+            System.out.println(" " + (time / 1000) + "\u00B5s");
         }
     }
 }
