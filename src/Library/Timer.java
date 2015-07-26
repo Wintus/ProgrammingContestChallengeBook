@@ -46,5 +46,20 @@ public class Timer<T> {
         long d = Math.abs(time0 - time1);
         System.out.println("Diff: " + d + "\u00B5s");
         System.out.println();
+
+        // do nothing test
+        System.out.println("Measure time (ns) = count");
+        SortedMap<Long, Integer> times = new TreeMap<>();
+        SortedMap<Long, Integer> runs = new TreeMap<>();
+        for (int i = 0; i < 1000; i++) {
+            start = System.nanoTime();
+            end = System.nanoTime();
+            d = end - start;
+            times.put(d, times.getOrDefault(d, 0) + 1);
+            d = timer.run(0, o -> {});
+            runs.put(d, times.getOrDefault(d, 0) + 1);
+        }
+        System.out.println("times:\t" + times); // < .5-5ms
+        System.out.println("runs:\t" + runs);   // < 5-30ms
     }
 }
