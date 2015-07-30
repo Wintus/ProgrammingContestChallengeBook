@@ -23,7 +23,6 @@ public class NumberOfRegion {
         this.X2 = x2;
         this.Y1 = y1;
         this.Y2 = y2;
-        filled = new boolean[N * 3][N * 3];
     }
 
     private int compress(int[] x1, int[] x2, int w) {
@@ -67,9 +66,9 @@ public class NumberOfRegion {
                     for (int[] d : adj) {
                         int dx = _x + d[0], dy = _y + d[1];
                         try {
-                            if (filled[dx][dy]) continue;
+                            if (filled[dy][dx]) continue;
                             queue.add(new Point(dx, dy));
-                            filled[dx][dy] = true;
+                            filled[dy][dx] = true;
                         } catch (ArrayIndexOutOfBoundsException ignored) {
                         }
                     }
