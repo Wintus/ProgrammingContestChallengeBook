@@ -42,6 +42,7 @@ public class HugeKnapsack {
     }
 
     int solve() {
+        // enumerate the first half
         List<Item> ps = new ArrayList<>(1 << (N / 2));
         int n_2 = N / 2;
         for (int i = 0; i < 1 << n_2; i++) {
@@ -61,7 +62,7 @@ public class HugeKnapsack {
                 if (ps.get(i).value >= ps.get(j).value)
                     ps.remove(j--);
         // enumerate all the rest
-        int result = 0;
+        List<Item> qs = new ArrayList<>(1 << (N - n_2 / 2));
         for (int i = 0; i < 1 << (N - n_2); i++) {
             int sumW = 0, sumV = 0;
             for (int j = 0; j < N - n_2; j++)
@@ -69,13 +70,15 @@ public class HugeKnapsack {
                     sumW += items[n_2 + j][0];
                     sumV += items[n_2 + j][1];
                 }
-            if (sumW <= W) {
-                int index = Lookup.lowerBound(ps,
-                        new Item(W - sumW, Integer.MAX_VALUE)) - 1;
-                result = Math.max(result, sumV + ps.get(index).value);
-            }
+            qs.add(new Item(sumW, sumV));
         }
-        return result;
+        return qs.stream()
+                 .filter(item -> item.weight <= W)
+                 .mapToInt(item -> {
+                     int index = Lookup.lowerBound(ps,
+                             new Item(W - item.weight, Integer.MAX_VALUE)) - 1;
+                     return item.value + ps.get(index).value;
+                 }).max().getAsInt();
     }
 
     public static void main(String[] args) {
