@@ -56,10 +56,10 @@ public class HugeKnapsack {
         }
         // remove useless: valueless yet heavier
         Collections.sort(ps);
-        int m = 1;
-        for (int i = 1; i < ps.size(); i++)
-            if (ps.get(m - 1).value < ps.get(i).value)
-                ps.set(m++, ps.get(i));
+        for (int i = 1; i < ps.size(); i++) // w, v > 1
+            for (int j = i + 1; j < ps.size(); j++)
+                if (ps.get(i).value >= ps.get(j).value)
+                    ps.remove(j--);
         // enumerate all the rest
         int result = 0;
         for (int i = 0; i < 1 << (N - n_2); i++) {
