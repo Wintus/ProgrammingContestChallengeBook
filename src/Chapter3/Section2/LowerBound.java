@@ -2,6 +2,7 @@ package Chapter3.Section2;
 
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.function.Predicate;
 
 /**
  * Binary Search.
@@ -15,6 +16,18 @@ public class LowerBound {
     public LowerBound(int[] ns, int k) {
         this.ns = ns;
         this.k = k;
+    }
+
+    static double lowerBound(Predicate<Double> predicate, double precision) {
+        double lb = 0, mid = 0, ub = 1_000_000;
+        while (ub - lb > precision) {
+            mid = (lb + ub) / 2;
+            if (predicate.test(mid))
+                lb = mid;
+            else
+                ub = mid;
+        }
+        return mid;
     }
 
     int solve() {

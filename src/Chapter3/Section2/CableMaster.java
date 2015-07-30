@@ -2,7 +2,6 @@ package Chapter3.Section2;
 
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.function.Predicate;
 
 /**
  * Binary Search.
@@ -22,20 +21,9 @@ public class CableMaster {
         return n >= K;
     }
 
-    static double lowerBound(Predicate<Double> predicate) {
-        double lb = 0, mid = 0, ub = 100_000;
-        while (ub - lb > .01) {
-            mid = (lb + ub) / 2;
-            if (predicate.test(mid))
-                lb = mid;
-            else
-                ub = mid;
-        }
-        return mid;
-    }
-
     double solve() {
-        return Math.floor(lowerBound(this::condition) * 100) / 100;
+        return Math.floor(
+                LowerBound.lowerBound(this::condition, .01) * 100) / 100;
     }
 
     public static void main(String[] args) {

@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.Scanner;
-import java.util.function.Predicate;
 
 /**
  * Binary Search. Max Average.
@@ -30,20 +29,8 @@ public class MaximizeAverage {
         return sum >= 0;
     }
 
-    private static double lowerBound(Predicate<Double> predicate) {
-        double lb = 0, mid = 0, ub = 1_000_000;
-        while (ub - lb > .01) {
-            mid = (lb + ub) / 2;
-            if (predicate.test(mid))
-                lb = mid;
-            else
-                ub = mid;
-        }
-        return mid;
-    }
-
     double solve() {
-        return lowerBound(this::condition);
+        return LowerBound.lowerBound(this::condition, .01);
     }
 
     public static void main(String[] args) {
