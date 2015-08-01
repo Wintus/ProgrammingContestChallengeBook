@@ -1,7 +1,10 @@
 package Chapter3.Section4;
 
+import java.lang.reflect.Array;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Scanner;
 
 /**
  * Use Segment Tree or Binary Indexed Tree. Deal with Query.
@@ -108,5 +111,27 @@ public class ASimpleProblemWithIntegers {
             }
         }
         return list;
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int q = scanner.nextInt();
+            int[] a = new int[n];
+            Arrays.setAll(a, x -> scanner.nextInt());
+            char[] t = new char[q];
+            int[] l = new int[q];
+            int[] r = new int[q];
+            int[] x = new int[q];
+            final String[] split = scanner.nextLine().split(" ");
+            for (int i = 0; i < q; i++) t[i] = split[i].charAt(0);
+            Arrays.setAll(l, i -> scanner.nextInt());
+            Arrays.setAll(r, i -> scanner.nextInt());
+            Arrays.setAll(x, i -> scanner.nextInt());
+            ASimpleProblemWithIntegers ASPWI =
+                    new ASimpleProblemWithIntegers(a, t, l, r, x);
+            ASPWI.solve0().forEach(System.out::println);
+            ASPWI.solve().forEach(System.out::println);
+        }
     }
 }
