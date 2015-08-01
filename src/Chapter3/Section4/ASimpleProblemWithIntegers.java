@@ -29,7 +29,7 @@ public class ASimpleProblemWithIntegers {
     }
 
     // add x to [a, b). k is node No. to [l, r).
-    void addST(int a, int b, int x, int k, int l, int r) {
+    private void addST(int a, int b, int x, int k, int l, int r) {
         if (a <= l && r <= b)
             data0[k] += x;
         else if (l < b && a < r) {
@@ -41,7 +41,7 @@ public class ASimpleProblemWithIntegers {
     }
 
     // sum [a, b). node k to [l, r).
-    long sumST(int a, int b, int k, int l, int r) {
+    private long sumST(int a, int b, int k, int l, int r) {
         if (b <= l || r <= a)
             return 0;
         else if (a <= l && r <= b)
@@ -67,6 +67,46 @@ public class ASimpleProblemWithIntegers {
                 addST(L[i], R[i] + 1, X[i], 0, 0, N);
             else
                 list.add(sumST(L[i], R[i] + 1, 0, 0, N));
+        return list;
+    }
+
+    private long sumBIT(long[] bit, int i) {
+        long sum = 0;
+        while (i > 0) {
+            sum += bit[i];
+            i -= i & -i;
+        }
+        return sum;
+    }
+
+    private void addBIT(long[] bit, int i, int n) {
+        while (i <= N) {
+            bit[i] += n;
+            i += i & -i;
+        }
+    }
+
+    List<Long> solve() {
+        bit0 = new long[N + 1];
+        bit1 = new long[N + 1];
+        List<Long> list = new ArrayList<>();
+        for (int i = 1; i <= N; i++)
+            addBIT(bit0, i, A[i]);
+        for (int i = 0; i < Q; i++) {
+            // sum a (1 - i) = sum(bit1, i) + sum(bit0, i)
+            final int Li_1 = L[i] - 1;
+            if (T[i] == 'C') {
+                addBIT(bit0, L[i], -X[i] * (Li_1));
+                addBIT(bit1, L[i], X[i]);
+                addBIT(bit0, R[i] + 1, X[i] * R[i]);
+                addBIT(bit1, R[i] + 1, -X[i]);
+            } else {
+                long result = 0;
+                result += sumBIT(bit0, R[i]) + sumBIT(bit1, R[i]) * R[i];
+                result -= sumBIT(bit0, Li_1) + sumBIT(bit1, Li_1) * Li_1;
+                list.add(result);
+            }
+        }
         return list;
     }
 }
