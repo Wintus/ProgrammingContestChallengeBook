@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.Scanner;
 
 /**
- * Segment Tree.
+ * Segment Tree. YET HAS BUG.
  * Created by Yuya on 2015/07/30.
  */
 public class Crane {
@@ -39,15 +39,17 @@ public class Crane {
         }
     }
 
-    // s.a += dAng
-    // node is in [left, right)
+    /*
+     s.a += dAng
+     node is in [left, right)
+     */
     private void change(int line, double dAng, int node, int left, int right) {
-        if (1 <= line && right - left > 1) { //isValidLine & isNode
+        if (1 <= line && right - left > 1) { //isValidLine && isNode
             int childL = node * 2 + 1, childR = node * 2 + 2;
             int middle = (left + right) / 2;
             change(line, dAng, childL, left, middle);
             change(line, dAng, childR, middle, right);
-            if (line - 1 < middle) angle[node] += dAng;
+            if (line == middle) angle[node] += dAng;
             double sin = Math.sin(angle[node]), cos = Math.cos(angle[node]);
             vx[node] = vx[childL] + (cos * vx[childR] - sin * vy[childR]);
             vy[node] = vy[childL] + (sin * vx[childR] + cos * vy[childR]);
@@ -60,8 +62,8 @@ public class Crane {
         Arrays.fill(prev_ang, Math.PI);
         for (int i = 0; i < C; i++) {
             int s = S[i];
-            double ang = A[i] / 360.0 * 2 * Math.PI; // rad
-            change(s, ang - prev_ang[s], 0, 0, N);
+            double ang = A[i] / 360.0 * 2 * Math.PI; // radian
+            change(s, ang - prev_ang[s - 1], 0, 0, N);
             prev_ang[i] = ang;
             result[i] = new double[]{vx[0], vy[0]};
         }
