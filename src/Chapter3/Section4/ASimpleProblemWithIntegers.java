@@ -1,6 +1,5 @@
 package Chapter3.Section4;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -17,8 +16,6 @@ public class ASimpleProblemWithIntegers {
     private final int[] L, R, X;
     // data of segment tree
     private long[] data0, data1; // uniform, individual
-    // data of BIT
-    private long[] bit0, bit1;
 
     public ASimpleProblemWithIntegers
             (int[] a, char[] t, int[] l, int[] r, int[] x) {
@@ -90,8 +87,8 @@ public class ASimpleProblemWithIntegers {
     }
 
     List<Long> solve() {
-        bit0 = new long[N + 1];
-        bit1 = new long[N + 1];
+        long[] bit0 = new long[N + 1];
+        long[] bit1 = new long[N + 1];
         List<Long> list = new ArrayList<>();
         for (int i = 1; i <= N; i++)
             addBIT(bit0, i, A[i]);
@@ -128,10 +125,10 @@ public class ASimpleProblemWithIntegers {
             Arrays.setAll(l, i -> scanner.nextInt());
             Arrays.setAll(r, i -> scanner.nextInt());
             Arrays.setAll(x, i -> scanner.nextInt());
-            ASimpleProblemWithIntegers ASPWI =
+            ASimpleProblemWithIntegers query =
                     new ASimpleProblemWithIntegers(a, t, l, r, x);
-            ASPWI.solve0().forEach(System.out::println);
-            ASPWI.solve().forEach(System.out::println);
+            query.solve0().forEach(System.out::println);
+            query.solve().forEach(System.out::println);
         }
     }
 }
