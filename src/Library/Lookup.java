@@ -129,4 +129,17 @@ public class Lookup {
         }
         return ub;
     }
+
+    public static <T extends Comparable<? super T>>
+    int upperBound(List<T> list, T key) {
+        int lb = -1, ub = list.size();
+        while (ub - lb > 1) {
+            int mid = (lb + ub) / 2;
+            if (list.get(mid).compareTo(key) > 0)
+                ub = mid;
+            else
+                lb = mid;
+        }
+        return ub;
+    }
 }
