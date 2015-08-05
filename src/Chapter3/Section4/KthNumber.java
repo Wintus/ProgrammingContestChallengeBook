@@ -2,10 +2,7 @@ package Chapter3.Section4;
 
 import Library.Lookup;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
+import java.util.*;
 
 /**
  * Bucket Method of Sqrt Decomposition.
@@ -18,7 +15,6 @@ public class KthNumber {
     private final int[] ns; // sorted A
     // bucket
     List<List<Integer>> bucket; // sorted buckets
-    private static final int B = 1000;
 
     public KthNumber(int[] a, int[][] query) {
         A = a;
@@ -28,10 +24,16 @@ public class KthNumber {
     }
 
     List<Integer> solveB() {
+        final int B = (int) Math.sqrt(N);
         List<Integer> result = new ArrayList<>(query.length);
         bucket = new ArrayList<>(N / B);
         for (int i = 0; i < N; i++) {
-            bucket.get(i / B).add(A[i]);
+            try {
+                bucket.get(i / B).add(A[i]);
+            } catch (IndexOutOfBoundsException e) {
+                bucket.add(new ArrayList<>());
+                bucket.get(i / B).add(A[i]);
+            }
             ns[i] = A[i];
         }
         Arrays.sort(ns);
@@ -44,21 +46,36 @@ public class KthNumber {
             while (ub - lb > 1) {
                 int mid = (lb + ub) / 2;
                 int n = ns[mid];
-                int c = 0;
+                int _left = left, _right = right, count = 0;
                 // exceeds of bucket
-                while (left < right && left % B != 0) if (A[left++] <= n) ++c;
-                while (left < right && right % B != 0) if (A[--right] <= n) ++c;
+                while (_left < _right && _left % B != 0)
+                    if (A[_left++] <= n) ++count;
+                while (_left < _right && _right % B != 0)
+                    if (A[--_right] <= n) ++count;
                 // for each bucket
-                while (left < right) {
-                    final List<Integer> list = bucket.get(left / B);
-                    c += Lookup.upperBound(list, n) - list.get(0);
-                    left += B;
+                while (_left < _right) {
+                    int b = _left / B;
+                    count += Lookup.upperBound(bucket.get(b), n);
+                    _left += B;
                 }
-                if (c >= k) ub = mid;
+                if (count >= k) ub = mid;
                 else lb = mid;
             }
-            result.add(ns[ub]);
+            result.add(ns[ub - 1]);
         }
         return result;
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int m = scanner.nextInt();
+            int[] a = new int[n];
+            Arrays.setAll(a, x -> scanner.nextInt());
+            int[][] qs = new int[m][3];
+            for (int[] q : qs) Arrays.setAll(q, x -> scanner.nextInt());
+            KthNumber kthNumber = new KthNumber(a, qs);
+            kthNumber.solveB().forEach(System.out::println);
+        }
     }
 }
