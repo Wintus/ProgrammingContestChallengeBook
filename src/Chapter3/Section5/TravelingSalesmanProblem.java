@@ -1,6 +1,8 @@
 package Chapter3.Section5;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Master Dynamic Programming of Bit DP.
@@ -39,5 +41,15 @@ public class TravelingSalesmanProblem {
     int solveRec() {
         for (int[] ints : dp) Arrays.fill(ints, -1);
         return recursion(0, 0);
+    }
+
+    public static void main(String[] args) {
+        try (Scanner scanner = new Scanner(System.in)) {
+            int n = scanner.nextInt();
+            int[][] d = new int[n][n];
+            for (int[] edge : d) Arrays.setAll(edge, x -> scanner.nextInt());
+            TravelingSalesmanProblem TSP = new TravelingSalesmanProblem(n, d);
+            System.out.println(TSP.solveRec());
+        }
     }
 }
