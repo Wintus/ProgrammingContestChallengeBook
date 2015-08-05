@@ -1,6 +1,5 @@
 package Chapter3.Section5;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.Scanner;
 
@@ -9,6 +8,7 @@ import java.util.Scanner;
  * Created by Yuya on 2015/08/04.
  */
 public class TravelingSalesmanProblem {
+    private static final int INF = Integer.MAX_VALUE / 2;
     private final int N;
     private final int distance[][];
     // DP table
@@ -28,7 +28,7 @@ public class TravelingSalesmanProblem {
             // traversed all vertexes
             return dp[set][v] = 0;
 
-        int result = Integer.MAX_VALUE;
+        int result = INF;
         for (int u = 0; u < N; u++) {
             if (!((set >> u & 1) == 1))
                 // go next
@@ -45,9 +45,20 @@ public class TravelingSalesmanProblem {
 
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
-            int n = scanner.nextInt();
+            int n = 5; // scanner.nextInt();
             int[][] d = new int[n][n];
-            for (int[] edge : d) Arrays.setAll(edge, x -> scanner.nextInt());
+            for (int[] edge : d) Arrays.fill(edge, INF);
+            for (int i = 0; i < n; i++) d[i][i] = 0;
+//            for (int[] edge : d) Arrays.setAll(edge, x -> scanner.nextInt());
+            d[0][1] = 3;
+            d[0][3] = 4;
+            d[1][2] = 5;
+            d[2][0] = 4;
+            d[2][3] = 5;
+            d[3][4] = 3;
+            d[4][0] = 7;
+            d[4][1] = 6;
+
             TravelingSalesmanProblem TSP = new TravelingSalesmanProblem(n, d);
             System.out.println(TSP.solveRec());
         }
