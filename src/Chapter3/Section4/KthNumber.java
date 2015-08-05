@@ -15,6 +15,8 @@ public class KthNumber {
     private final int[] ns; // sorted A
     // bucket
     List<List<Integer>> bucket; // sorted buckets
+    // segment tree
+    List<List<Integer>> data; // sorted buckets
 
     public KthNumber(int[] a, int[][] query) {
         A = a;
@@ -66,6 +68,64 @@ public class KthNumber {
         return result;
     }
 
+    // node k in [left, right)
+    void init(int k, int left, int right) {
+        if (right - left == 1) {
+            while (data.size() <= k) data.add(new ArrayList<>());
+            data.set(k, new ArrayList<>(1));
+            data.get(k).add(A[left]);
+        } else {
+            int childLeft = k * 2 + 1, childRight = k * 2 + 2;
+            int middle = (left + right) / 2;
+            init(childLeft, left, middle);
+            init(childRight, middle, right);
+            data.set(k, new ArrayList<>(right - left));
+            // merge two children
+            data.get(k).addAll(data.get(childLeft));
+            data.get(k).addAll(data.get(childRight));
+            data.get(k).sort(Integer::compare);
+        }
+    }
+
+    // deal query: count numbers less than n in [a, b)
+    // node k in [left, right)
+    int query(int a, int b, int n, int k, int left, int right) {
+        if (b <= left || right <= a) // never intersects
+            return 0;
+        else if (a <= left && right <= b) // [a, b) contains [left, right)
+            return Lookup.upperBound(data.get(k), n);
+        else {
+            // find recursively for children
+            int middle = (left + right) / 2;
+            int childLeft = query(a, b, n, k * 2 + 1, left, middle);
+            int childRight = query(a, b, n, k * 2 + 2, middle, right);
+            return childLeft + childRight;
+        }
+    }
+
+    List<Integer> solveST() {
+        List<Integer> result = new ArrayList<>(query.length);
+        final int capacity = 2 * N;
+        data = new ArrayList<>(capacity);
+        System.arraycopy(A, 0, ns, 0, N);
+        Arrays.sort(ns);
+        init(0, 0, N);
+
+        for (int[] q : query) {
+            int left = q[0], right = q[1], k = q[2];
+            int lb = -1, ub = N - 1;
+            // lowerBound
+            while (ub - lb > 1) {
+                int mid = (lb + ub) / 2;
+                int c = query(left, right, ns[mid], 0, 0, N);
+                if (c >= k) ub = mid;
+                else lb = mid;
+            }
+            result.add(ns[ub]);
+        }
+        return result;
+    }
+
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
@@ -76,6 +136,8 @@ public class KthNumber {
             for (int[] q : qs) Arrays.setAll(q, x -> scanner.nextInt());
             KthNumber kthNumber = new KthNumber(a, qs);
             kthNumber.solveB().forEach(System.out::println);
+            System.out.println();
+            kthNumber.solveST().forEach(System.out::println);
         }
     }
 }
