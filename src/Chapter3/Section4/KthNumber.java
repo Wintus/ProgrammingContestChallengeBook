@@ -42,8 +42,8 @@ public class KthNumber {
         bucket.forEach(Collections::sort);
         // deal query
         for (int[] q : query) {
-            int left = q[0], right = q[1], k = q[2];
-            // lower bound
+            int left = q[0] - 1, right = q[1], k = q[2] - 1;
+            // upperBound
             int lb = -1, ub = N - 1;
             while (ub - lb > 1) {
                 int mid = (lb + ub) / 2;
@@ -60,10 +60,10 @@ public class KthNumber {
                     count += Lookup.upperBound(bucket.get(b), n);
                     _left += B;
                 }
-                if (count >= k) ub = mid;
+                if (count > k) ub = mid;
                 else lb = mid;
             }
-            result.add(ns[ub - 1]);
+            result.add(ns[ub]);
         }
         return result;
     }
@@ -87,10 +87,10 @@ public class KthNumber {
         }
     }
 
-    // deal query: count numbers less than n in [a, b)
+    // deal query: count the numbers less than n in [a, b)
     // node k in [left, right)
     int query(int a, int b, int n, int k, int left, int right) {
-        if (b <= left || right <= a) // never intersects
+        if (right <= a || b <= left) // never intersects
             return 0;
         else if (a <= left && right <= b) // [a, b) contains [left, right)
             return Lookup.upperBound(data.get(k), n);
@@ -112,13 +112,13 @@ public class KthNumber {
         init(0, 0, N);
 
         for (int[] q : query) {
-            int left = q[0], right = q[1], k = q[2];
+            int left = q[0] - 1, right = q[1], k = q[2] - 1;
             int lb = -1, ub = N - 1;
-            // lowerBound
+            // upperBound
             while (ub - lb > 1) {
                 int mid = (lb + ub) / 2;
                 int c = query(left, right, ns[mid], 0, 0, N);
-                if (c >= k) ub = mid;
+                if (c > k) ub = mid;
                 else lb = mid;
             }
             result.add(ns[ub]);
