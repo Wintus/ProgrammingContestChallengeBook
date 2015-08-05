@@ -25,6 +25,8 @@ public class KthNumber {
         ns = new int[N];
     }
 
+    // too complex
+    @SuppressWarnings("ConstantConditions")
     List<Integer> solveB() {
         final int B = (int) Math.sqrt(N);
         List<Integer> result = new ArrayList<>(query.length);
@@ -40,25 +42,25 @@ public class KthNumber {
         }
         Arrays.sort(ns);
         bucket.forEach(Collections::sort);
+
         // deal query
         for (int[] q : query) {
-            int left = q[0] - 1, right = q[1], k = q[2] - 1;
+            int left = q[0] - 1, right = q[1], k = q[2] - 1; // [left, right)
             // upperBound
             int lb = -1, ub = N - 1;
             while (ub - lb > 1) {
                 int mid = (lb + ub) / 2;
                 int n = ns[mid];
-                int _left = left, _right = right, count = 0;
+                int left1 = left, right1 = right, count = 0;
                 // exceeds of bucket
-                while (_left < _right && _left % B != 0)
-                    if (A[_left++] <= n) ++count;
-                while (_left < _right && _right % B != 0)
-                    if (A[--_right] <= n) ++count;
+                while (left1 < right1 && left1 % B != 0)
+                    if (A[left1++] <= n) ++count;
+                while (left1 < right1 && right1 % B != 0)
+                    if (A[--right1] <= n) ++count;
                 // for each bucket
-                while (_left < _right) {
-                    int b = _left / B;
-                    count += Lookup.upperBound(bucket.get(b), n);
-                    _left += B;
+                while (left1 < right1) {
+                    count += Lookup.upperBound(bucket.get(left1 / B), n);
+                    left1 += B;
                 }
                 if (count > k) ub = mid;
                 else lb = mid;
@@ -69,7 +71,7 @@ public class KthNumber {
     }
 
     // node k in [left, right)
-    void init(int k, int left, int right) {
+    private void init(int k, int left, int right) {
         if (right - left == 1) {
             while (data.size() <= k) data.add(new ArrayList<>());
             data.set(k, new ArrayList<>(1));
@@ -87,9 +89,9 @@ public class KthNumber {
         }
     }
 
-    // deal query: count the numbers less than n in [a, b)
+    // deal query: count the numbers (>= n) in [a, b)
     // node k in [left, right)
-    int query(int a, int b, int n, int k, int left, int right) {
+    private int query(int a, int b, int n, int k, int left, int right) {
         if (right <= a || b <= left) // never intersects
             return 0;
         else if (a <= left && right <= b) // [a, b) contains [left, right)
@@ -105,20 +107,19 @@ public class KthNumber {
 
     List<Integer> solveST() {
         List<Integer> result = new ArrayList<>(query.length);
-        final int capacity = 2 * N;
-        data = new ArrayList<>(capacity);
+        data = new ArrayList<>(2 * N);
         System.arraycopy(A, 0, ns, 0, N);
         Arrays.sort(ns);
         init(0, 0, N);
 
         for (int[] q : query) {
-            int left = q[0] - 1, right = q[1], k = q[2] - 1;
+            int left = q[0] - 1, right = q[1], k = q[2] - 1; // [left, right)
             int lb = -1, ub = N - 1;
             // upperBound
             while (ub - lb > 1) {
                 int mid = (lb + ub) / 2;
-                int c = query(left, right, ns[mid], 0, 0, N);
-                if (c > k) ub = mid;
+                int count = query(left, right, ns[mid], 0, 0, N);
+                if (count > k) ub = mid;
                 else lb = mid;
             }
             result.add(ns[ub]);
