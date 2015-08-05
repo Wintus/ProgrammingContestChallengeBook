@@ -29,12 +29,11 @@ public class TravelingSalesmanProblem {
             return dp[set][v] = 0;
 
         int result = INF;
-        for (int u = 0; u < N; u++) {
-            if (!((set >> u & 1) == 1))
+        for (int u = 0; u < N; u++)
+            if ((set >> u & 1) != 1)
                 // go next
                 result = Math.min(result,
                         recursion(set | 1 << u, u) + distance[v][u]);
-        }
         return dp[set][v] = result;
     }
 
@@ -44,7 +43,7 @@ public class TravelingSalesmanProblem {
     }
 
     public static void main(String[] args) {
-        try (Scanner scanner = new Scanner(System.in)) {
+        try (Scanner ignored = new Scanner(System.in)) {
             int n = 5; // scanner.nextInt();
             int[][] d = new int[n][n];
             for (int[] edge : d) Arrays.fill(edge, INF);
