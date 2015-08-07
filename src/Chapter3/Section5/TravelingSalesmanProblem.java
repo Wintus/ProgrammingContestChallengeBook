@@ -12,19 +12,21 @@ public class TravelingSalesmanProblem {
     private final int N;
     private final int distance[][];
     // DP table
-    private int[][] dp;
+    private final int[][] dp;
+    private final int ALL;
 
     public TravelingSalesmanProblem(int n, int[][] distance) {
         N = n;
         this.distance = distance;
         dp = new int[1 << N][N];
+        ALL = (1 << N) - 1;
     }
 
     // set is the set of visited vertexes. v is the current vertex.
     private int recursion(int set, int v) {
         if (dp[set][v] >= 0)
             return dp[set][v];
-        if (set == (1 << N) - 1 && v == 0)
+        if (set == ALL && v == 0)
             // traversed all vertexes
             return dp[set][v] = 0;
 
@@ -40,6 +42,19 @@ public class TravelingSalesmanProblem {
     int solveRec() {
         for (int[] ints : dp) Arrays.fill(ints, -1);
         return recursion(0, 0);
+    }
+
+    int solve() {
+        for (int[] ints : dp) Arrays.fill(ints, INF);
+        dp[ALL][0] = 0;
+
+        for (int set = ALL - 1; set >= 0; set--)
+            for (int v = 0; v < N; v++)
+                for (int u = 0; u < N; u++)
+                    if ((set >> u & 1) != 1)
+                        dp[set][v] = Math.min(dp[set][v],
+                                dp[set | 1 << u][u] + distance[v][u]);
+        return dp[0][0];
     }
 
     public static void main(String[] args) {
@@ -60,6 +75,8 @@ public class TravelingSalesmanProblem {
 
             TravelingSalesmanProblem TSP = new TravelingSalesmanProblem(n, d);
             System.out.println(TSP.solveRec());
+            System.out.println();
+            System.out.println(TSP.solve());
         }
     }
 }
