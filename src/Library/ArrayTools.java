@@ -18,4 +18,8 @@ public class ArrayTools {
     public static void fill2d(long[][] array, long value) {
         for (long[] longs : array) Arrays.fill(longs, value);
     }
+
+    public static void fill2d(boolean[][] array, boolean b) {
+        for (boolean[] booleans : array) Arrays.fill(booleans, b);
+    }
 }
