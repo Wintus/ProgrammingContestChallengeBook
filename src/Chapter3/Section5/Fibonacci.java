@@ -9,17 +9,23 @@ import java.util.Scanner;
  * Created by Yuya on 2015/08/09.
  */
 public class Fibonacci {
-    private static final int[][] a = {{1, 1}, {1, 0}};
-    private static final IntMatrix2D A = new IntMatrix2D(a);
+    private static final IntMatrix2D A = new IntMatrix2D(new int[][]{{1, 1}, {1, 0}});
+    private static final RecurrenceRelation fib =
+            new RecurrenceRelation(2, new int[]{1, 1}, new int[]{1, 0});
 
-    int solve(int n) {
+    public static int solve(int n) {
         return A.power(n).getAt(1, 0);
+    }
+
+    public static int solve1(int n) {
+        return fib.find(n);
     }
 
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
-            System.out.println(new Fibonacci().solve(n));
+            System.out.println(solve(n));
+            System.out.println(solve1(n));
         }
     }
 }
