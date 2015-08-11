@@ -77,7 +77,7 @@ public class IntMatrix2D {
         return C;
     }
 
-    public static IntMatrix2D operate2(IntMatrix2D A, IntMatrix2D B,
+    static IntMatrix2D operate1(IntMatrix2D A, IntMatrix2D B,
                                        BiFunction<Integer, Integer, Integer> operator1,
                                        Function<Integer, Integer> operator2) {
         IntMatrix2D C = new IntMatrix2D(A.row, B.column);
@@ -86,6 +86,20 @@ public class IntMatrix2D {
                 for (int j = 0; j < B.column; j++) {
                     C.matrix[i][j] += operator1.apply(A.getAt(i, k), B.getAt(k, j));
                     C.matrix[i][j] = operator2.apply(C.getAt(i, j));
+                }
+        return C;
+    }
+
+    static IntMatrix2D operate2(IntMatrix2D A, IntMatrix2D B,
+                                       BiFunction<Integer, Integer, Integer> operator1,
+                                       int n,
+                                       BiFunction<Integer, Integer, Integer> operator2) {
+        IntMatrix2D C = new IntMatrix2D(A.row, B.column);
+        for (int i = 0; i < A.row; i++)
+            for (int k = 0; k < B.row; k++)
+                for (int j = 0; j < B.column; j++) {
+                    C.matrix[i][j] += operator1.apply(A.getAt(i, k), B.getAt(k, j));
+                    C.matrix[i][j] = operator2.apply(C.getAt(i, j), n);
                 }
         return C;
     }
@@ -101,26 +115,16 @@ public class IntMatrix2D {
 
     public static IntMatrix2D addMod(IntMatrix2D A, IntMatrix2D B, int mod) {
         assert A.row == B.row && A.column == B.column;
-        return operate2(A, B, (a, b) -> a + b, n -> n % mod);
+        return operate1(A, B, (a, b) -> a + b, n -> n % mod);
     }
 
     public IntMatrix2D addMod(IntMatrix2D B, int mod) {
         return addMod(this, B, mod);
     }
 
-    public static IntMatrix2D time(IntMatrix2D A, IntMatrix2D B) {
-        assert A.column == B.row;
-        return operate(A, B, (a, b) -> a * b);
-    }
-
     public static IntMatrix2D multiply(IntMatrix2D A, IntMatrix2D B) {
         assert A.column == B.row;
-        IntMatrix2D C = new IntMatrix2D(A.row, B.column);
-        for (int i = 0; i < A.row; i++)
-            for (int k = 0; k < B.row; k++)
-                for (int j = 0; j < B.column; j++)
-                    C.matrix[i][j] += A.getAt(i, k) * B.getAt(k, j);
-        return C;
+        return operate(A, B, (a, b) -> a * b);
     }
 
     public IntMatrix2D multiply(IntMatrix2D B) {
@@ -129,7 +133,7 @@ public class IntMatrix2D {
 
     public static IntMatrix2D multiplyMod(IntMatrix2D A, IntMatrix2D B, int mod) {
         assert A.column == B.row;
-        return operate2(A, B, (a, b) -> a * b, n -> n % mod);
+        return operate1(A, B, (a, b) -> a * b, n -> n % mod);
     }
 
     public IntMatrix2D multiplyMod(IntMatrix2D B, int mod) {
