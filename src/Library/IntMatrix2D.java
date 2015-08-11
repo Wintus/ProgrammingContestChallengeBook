@@ -59,7 +59,7 @@ public class IntMatrix2D {
     }
 
     public static IntMatrix2D multiply(IntMatrix2D A, IntMatrix2D B) {
-        IntMatrix2D C = new IntMatrix2D(new int[A.row][B.column]);
+        IntMatrix2D C = new IntMatrix2D(A.row, B.column);
         for (int i = 0; i < A.row; i++)
             for (int k = 0; k < B.row; k++)
                 for (int j = 0; j < B.column; j++)
@@ -72,7 +72,7 @@ public class IntMatrix2D {
     }
 
     public static IntMatrix2D power(IntMatrix2D A, int n) {
-        IntMatrix2D B = new IntMatrix2D(new int[A.row][A.column]);
+        IntMatrix2D B = new IntMatrix2D(A.row, A.column);
         try {
             for (int i = 0; i < A.row; i++) B.matrix[i][i] = 1;
         } catch (ArrayIndexOutOfBoundsException ignored) {
