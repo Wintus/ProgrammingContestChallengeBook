@@ -67,7 +67,17 @@ public class IntMatrix2D {
         return row == column;
     }
 
-    public static IntMatrix2D operate(IntMatrix2D A, IntMatrix2D B,
+    public static IntMatrix2D identity(int size) {
+        final IntMatrix2D I = new IntMatrix2D(size);
+        for (int i = 0; i < size; i++) I.setAt(i, i, 1);
+        return I;
+    }
+
+    public static IntMatrix2D identity() {
+        return identity(2);
+    }
+
+    static IntMatrix2D operate(IntMatrix2D A, IntMatrix2D B,
                                       BiFunction<Integer, Integer, Integer> operator) {
         IntMatrix2D C = new IntMatrix2D(A.row, B.column);
         for (int i = 0; i < A.row; i++)
@@ -142,9 +152,7 @@ public class IntMatrix2D {
 
     public static IntMatrix2D power(IntMatrix2D A, int n) {
         assert A.isSquare();
-        IntMatrix2D B = new IntMatrix2D(A.row, A.column);
-        int min = Math.min(A.row, A.column);
-        for (int i = 0; i < min; i++) B.matrix[i][i] = 1;
+        IntMatrix2D B = identity(A.row);
         while (n > 0) {
             if ((n & 1) == 1) B = multiply(A, B);
             A = multiply(A, A);
@@ -159,9 +167,7 @@ public class IntMatrix2D {
 
     public static IntMatrix2D powerMod(IntMatrix2D A, int n, int mod) {
         assert A.isSquare();
-        IntMatrix2D B = new IntMatrix2D(A.row, A.column);
-        int min = Math.min(A.row, A.column);
-        for (int i = 0; i < min; i++) B.matrix[i][i] = 1;
+        IntMatrix2D B = identity(A.row);
         while (n > 0) {
             if ((n & 1) == 1) B = multiplyMod(A, B, mod);
             A = multiplyMod(A, A, mod);
