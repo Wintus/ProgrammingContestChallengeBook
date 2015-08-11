@@ -9,8 +9,13 @@ import java.util.function.Function;
  */
 public class IntMatrix2D {
     private final int row, column;
-
     private final int[][] matrix;
+
+    private interface IntOperator extends Function<Integer, Integer> {
+    }
+
+    private interface BiIntOperator extends BiFunction<Integer, Integer, Integer> {
+    }
 
     /**
      * Make matrix from int array.
@@ -77,8 +82,7 @@ public class IntMatrix2D {
         return identity(2);
     }
 
-    static IntMatrix2D operate(IntMatrix2D A, IntMatrix2D B,
-                                      BiFunction<Integer, Integer, Integer> operator) {
+    static IntMatrix2D operate(IntMatrix2D A, IntMatrix2D B, BiIntOperator operator) {
         IntMatrix2D C = new IntMatrix2D(A.row, B.column);
         for (int i = 0; i < A.row; i++)
             for (int k = 0; k < B.row; k++)
@@ -87,9 +91,8 @@ public class IntMatrix2D {
         return C;
     }
 
-    static IntMatrix2D operate1(IntMatrix2D A, IntMatrix2D B,
-                                       BiFunction<Integer, Integer, Integer> operator1,
-                                       Function<Integer, Integer> operator2) {
+    static IntMatrix2D operate1(IntMatrix2D A, IntMatrix2D B, BiIntOperator operator1,
+                                IntOperator operator2) {
         IntMatrix2D C = new IntMatrix2D(A.row, B.column);
         for (int i = 0; i < A.row; i++)
             for (int k = 0; k < B.row; k++)
@@ -100,10 +103,8 @@ public class IntMatrix2D {
         return C;
     }
 
-    static IntMatrix2D operate2(IntMatrix2D A, IntMatrix2D B,
-                                       BiFunction<Integer, Integer, Integer> operator1,
-                                       int n,
-                                       BiFunction<Integer, Integer, Integer> operator2) {
+    static IntMatrix2D operate2(IntMatrix2D A, IntMatrix2D B, BiIntOperator operator1,
+                                int n, BiIntOperator operator2) {
         IntMatrix2D C = new IntMatrix2D(A.row, B.column);
         for (int i = 0; i < A.row; i++)
             for (int k = 0; k < B.row; k++)
