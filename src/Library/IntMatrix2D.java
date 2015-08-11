@@ -94,6 +94,14 @@ public class IntMatrix2D {
         return add(this, B);
     }
 
+    public static IntMatrix2D addMod(IntMatrix2D A, IntMatrix2D B, int mod) {
+        return operate2(A, B, (a, b) -> a + b, n -> n % mod);
+    }
+
+    public IntMatrix2D addMod(IntMatrix2D B, int mod) {
+        return addMod(this, B, mod);
+    }
+
     public static IntMatrix2D time(IntMatrix2D A, IntMatrix2D B) {
         return operate(A, B, (a, b) -> a * b);
     }
@@ -115,6 +123,10 @@ public class IntMatrix2D {
         return operate2(A, B, (a, b) -> a * b, n -> n % mod);
     }
 
+    public IntMatrix2D multiplyMod(IntMatrix2D B, int mod) {
+        return multiplyMod(this, B, mod);
+    }
+
     public static IntMatrix2D power(IntMatrix2D A, int n) {
         IntMatrix2D B = new IntMatrix2D(A.row, A.column);
         try {
@@ -132,5 +144,21 @@ public class IntMatrix2D {
 
     public IntMatrix2D power(int n) {
         return power(this, n);
+    }
+
+    public static IntMatrix2D powerMod(IntMatrix2D A, int n, int mod) {
+        IntMatrix2D B = new IntMatrix2D(A.row, A.column);
+        int min = Math.min(A.row, A.column);
+        for (int i = 0; i < min; i++) B.matrix[i][i] = 1;
+        while (n > 0) {
+            if ((n & 1) == 1) B = multiplyMod(A, B, mod);
+            A = multiplyMod(A, A, mod);
+            n >>= 1;
+        }
+        return B;
+    }
+
+    public IntMatrix2D powerMod(int n, int mod) {
+        return powerMod(this, n, mod);
     }
 }
