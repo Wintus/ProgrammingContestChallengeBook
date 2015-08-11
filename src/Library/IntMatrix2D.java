@@ -1,5 +1,8 @@
 package Library;
 
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 /**
  * IntMatrix2D.
  * Created by Yuya on 2015/08/09.
@@ -27,7 +30,9 @@ public class IntMatrix2D {
      * @param column number of columns.
      */
     public IntMatrix2D(int row, int column) {
-        this(new int[row][column]);
+        this.row = row;
+        this.column = column;
+        matrix = new int[row][column];
     }
 
     /**
@@ -58,6 +63,41 @@ public class IntMatrix2D {
         return matrix;
     }
 
+    public static IntMatrix2D operate(IntMatrix2D A, IntMatrix2D B,
+                                      BiFunction<Integer, Integer, Integer> operator) {
+        IntMatrix2D C = new IntMatrix2D(A.row, B.column);
+        for (int i = 0; i < A.row; i++)
+            for (int k = 0; k < B.row; k++)
+                for (int j = 0; j < B.column; j++)
+                    C.matrix[i][j] += operator.apply(A.getAt(i, k), B.getAt(k, j));
+        return C;
+    }
+
+    public static IntMatrix2D operate2(IntMatrix2D A, IntMatrix2D B,
+                                       BiFunction<Integer, Integer, Integer> operator1,
+                                       Function<Integer, Integer> operator2) {
+        IntMatrix2D C = new IntMatrix2D(A.row, B.column);
+        for (int i = 0; i < A.row; i++)
+            for (int k = 0; k < B.row; k++)
+                for (int j = 0; j < B.column; j++) {
+                    C.matrix[i][j] += operator1.apply(A.getAt(i, k), B.getAt(k, j));
+                    C.matrix[i][j] = operator2.apply(C.getAt(i, j));
+                }
+        return C;
+    }
+
+    public static IntMatrix2D add(IntMatrix2D A, IntMatrix2D B) {
+        return operate(A, B, (a, b) -> a + b);
+    }
+
+    public IntMatrix2D add(IntMatrix2D B) {
+        return add(this, B);
+    }
+
+    public static IntMatrix2D time(IntMatrix2D A, IntMatrix2D B) {
+        return operate(A, B, (a, b) -> a * b);
+    }
+
     public static IntMatrix2D multiply(IntMatrix2D A, IntMatrix2D B) {
         IntMatrix2D C = new IntMatrix2D(A.row, B.column);
         for (int i = 0; i < A.row; i++)
@@ -69,6 +109,10 @@ public class IntMatrix2D {
 
     public IntMatrix2D multiply(IntMatrix2D B) {
         return multiply(this, B);
+    }
+
+    public static IntMatrix2D multiplyMod(IntMatrix2D A, IntMatrix2D B, int mod) {
+        return operate2(A, B, (a, b) -> a * b, n -> n % mod);
     }
 
     public static IntMatrix2D power(IntMatrix2D A, int n) {
