@@ -33,6 +33,23 @@ public class MatrixPowerSeries {
         return matrix;
     }
 
+    int[][] solve0(int power, int mod) {
+        final int[][] b = B.powerMod(power + 1, mod).getMatrix();
+        final int[][] matrix = new int[A.row][A.column];
+        for (int i = 0; i < A.row; i++)
+            System.arraycopy(b[i], 0, matrix[i], 0, A.column);
+        return matrix;
+    }
+
+    int[][] solve1(int power, int mod) {
+        final IntMatrix2d I0 = new IntMatrix2d(A.row * 2, A.column);
+        for (int i = 0; i < A.column; i++) I0.setAt(i, i, 1);
+        final int[][] b = B.powerMod(power + 1, mod).multiply(I0).getMatrix();
+        final int[][] matrix = new int[A.row][A.column];
+        System.arraycopy(b, 0, matrix, 0, A.row);
+        return matrix;
+    }
+
     public static void main(String[] args) {
         try (Scanner scanner = new Scanner(System.in)) {
             int n = scanner.nextInt();
