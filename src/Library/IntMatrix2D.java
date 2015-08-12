@@ -7,7 +7,7 @@ import java.util.function.Function;
  * IntMatrix2D.
  * Created by Yuya on 2015/08/09.
  */
-public class IntMatrix2D {
+public class IntMatrix2d {
     private final int row, column;
     private final int[][] matrix;
 
@@ -22,7 +22,7 @@ public class IntMatrix2D {
      *
      * @param array int array.
      */
-    public IntMatrix2D(int[][] array) {
+    public IntMatrix2d(int[][] array) {
         matrix = array;
         row = array.length;
         column = array[0].length;
@@ -34,7 +34,7 @@ public class IntMatrix2D {
      * @param row    number of rows.
      * @param column number of columns.
      */
-    public IntMatrix2D(int row, int column) {
+    public IntMatrix2d(int row, int column) {
         this.row = row;
         this.column = column;
         matrix = new int[row][column];
@@ -45,14 +45,14 @@ public class IntMatrix2D {
      *
      * @param size size of matrix.
      */
-    public IntMatrix2D(int size) {
+    public IntMatrix2d(int size) {
         this(size, size);
     }
 
     /**
      * Default 2-by-2 int matrix.
      */
-    public IntMatrix2D() {
+    public IntMatrix2d() {
         this(2);
     }
 
@@ -72,18 +72,18 @@ public class IntMatrix2D {
         return row == column;
     }
 
-    public static IntMatrix2D identity(int size) {
-        final IntMatrix2D I = new IntMatrix2D(size);
+    public static IntMatrix2d identity(int size) {
+        final IntMatrix2d I = new IntMatrix2d(size);
         for (int i = 0; i < size; i++) I.setAt(i, i, 1);
         return I;
     }
 
-    public static IntMatrix2D identity() {
+    public static IntMatrix2d identity() {
         return identity(2);
     }
 
-    static IntMatrix2D operate(IntMatrix2D A, IntMatrix2D B, BiIntOperator operator) {
-        IntMatrix2D C = new IntMatrix2D(A.row, B.column);
+    static IntMatrix2d operate(IntMatrix2d A, IntMatrix2d B, BiIntOperator operator) {
+        IntMatrix2d C = new IntMatrix2d(A.row, B.column);
         for (int i = 0; i < A.row; i++)
             for (int k = 0; k < B.row; k++)
                 for (int j = 0; j < B.column; j++)
@@ -91,9 +91,9 @@ public class IntMatrix2D {
         return C;
     }
 
-    static IntMatrix2D operate1(IntMatrix2D A, IntMatrix2D B, BiIntOperator operator1,
+    static IntMatrix2d operate1(IntMatrix2d A, IntMatrix2d B, BiIntOperator operator1,
                                 IntOperator operator2) {
-        IntMatrix2D C = new IntMatrix2D(A.row, B.column);
+        IntMatrix2d C = new IntMatrix2d(A.row, B.column);
         for (int i = 0; i < A.row; i++)
             for (int k = 0; k < B.row; k++)
                 for (int j = 0; j < B.column; j++) {
@@ -103,9 +103,9 @@ public class IntMatrix2D {
         return C;
     }
 
-    static IntMatrix2D operate2(IntMatrix2D A, IntMatrix2D B, BiIntOperator operator1,
+    static IntMatrix2d operate2(IntMatrix2d A, IntMatrix2d B, BiIntOperator operator1,
                                 int n, BiIntOperator operator2) {
-        IntMatrix2D C = new IntMatrix2D(A.row, B.column);
+        IntMatrix2d C = new IntMatrix2d(A.row, B.column);
         for (int i = 0; i < A.row; i++)
             for (int k = 0; k < B.row; k++)
                 for (int j = 0; j < B.column; j++) {
@@ -115,45 +115,45 @@ public class IntMatrix2D {
         return C;
     }
 
-    public static IntMatrix2D add(IntMatrix2D A, IntMatrix2D B) {
+    public static IntMatrix2d add(IntMatrix2d A, IntMatrix2d B) {
         assert A.row == B.row && A.column == B.column;
         return operate(A, B, (a, b) -> a + b);
     }
 
-    public IntMatrix2D add(IntMatrix2D B) {
+    public IntMatrix2d add(IntMatrix2d B) {
         return add(this, B);
     }
 
-    public static IntMatrix2D addMod(IntMatrix2D A, IntMatrix2D B, int mod) {
+    public static IntMatrix2d addMod(IntMatrix2d A, IntMatrix2d B, int mod) {
         assert A.row == B.row && A.column == B.column;
         return operate1(A, B, (a, b) -> a + b, n -> n % mod);
     }
 
-    public IntMatrix2D addMod(IntMatrix2D B, int mod) {
+    public IntMatrix2d addMod(IntMatrix2d B, int mod) {
         return addMod(this, B, mod);
     }
 
-    public static IntMatrix2D multiply(IntMatrix2D A, IntMatrix2D B) {
+    public static IntMatrix2d multiply(IntMatrix2d A, IntMatrix2d B) {
         assert A.column == B.row;
         return operate(A, B, (a, b) -> a * b);
     }
 
-    public IntMatrix2D multiply(IntMatrix2D B) {
+    public IntMatrix2d multiply(IntMatrix2d B) {
         return multiply(this, B);
     }
 
-    public static IntMatrix2D multiplyMod(IntMatrix2D A, IntMatrix2D B, int mod) {
+    public static IntMatrix2d multiplyMod(IntMatrix2d A, IntMatrix2d B, int mod) {
         assert A.column == B.row;
         return operate1(A, B, (a, b) -> a * b, n -> n % mod);
     }
 
-    public IntMatrix2D multiplyMod(IntMatrix2D B, int mod) {
+    public IntMatrix2d multiplyMod(IntMatrix2d B, int mod) {
         return multiplyMod(this, B, mod);
     }
 
-    public static IntMatrix2D power(IntMatrix2D A, int n) {
+    public static IntMatrix2d power(IntMatrix2d A, int n) {
         assert A.isSquare();
-        IntMatrix2D B = identity(A.row);
+        IntMatrix2d B = identity(A.row);
         while (n > 0) {
             if ((n & 1) == 1) B = multiply(A, B);
             A = multiply(A, A);
@@ -162,13 +162,13 @@ public class IntMatrix2D {
         return B;
     }
 
-    public IntMatrix2D power(int n) {
+    public IntMatrix2d power(int n) {
         return power(this, n);
     }
 
-    public static IntMatrix2D powerMod(IntMatrix2D A, int n, int mod) {
+    public static IntMatrix2d powerMod(IntMatrix2d A, int n, int mod) {
         assert A.isSquare();
-        IntMatrix2D B = identity(A.row);
+        IntMatrix2d B = identity(A.row);
         while (n > 0) {
             if ((n & 1) == 1) B = multiplyMod(A, B, mod);
             A = multiplyMod(A, A, mod);
@@ -177,7 +177,7 @@ public class IntMatrix2D {
         return B;
     }
 
-    public IntMatrix2D powerMod(int n, int mod) {
+    public IntMatrix2d powerMod(int n, int mod) {
         return powerMod(this, n, mod);
     }
 }

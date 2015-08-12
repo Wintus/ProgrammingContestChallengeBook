@@ -1,6 +1,6 @@
 package Chapter3.Section5;
 
-import Library.IntMatrix2D;
+import Library.IntMatrix2d;
 
 import java.util.Scanner;
 
@@ -9,7 +9,7 @@ import java.util.Scanner;
  * Created by Yuya on 2015/08/09.
  */
 public class Fibonacci {
-    private static final IntMatrix2D A = new IntMatrix2D(new int[][]{{1, 1}, {1, 0}});
+    private static final IntMatrix2d A = new IntMatrix2d(new int[][]{{1, 1}, {1, 0}});
     private static final RecurrenceRelation fib =
             new RecurrenceRelation(2, new int[]{1, 1}, new int[]{1, 0});
 

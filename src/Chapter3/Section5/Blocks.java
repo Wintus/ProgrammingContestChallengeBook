@@ -1,6 +1,6 @@
 package Chapter3.Section5;
 
-import Library.IntMatrix2D;
+import Library.IntMatrix2d;
 
 import java.util.Scanner;
 
@@ -9,8 +9,8 @@ import java.util.Scanner;
  * Created by Yuya on 2015/08/11.
  */
 public class Blocks {
-    public static final IntMatrix2D matrix =
-            new IntMatrix2D(new int[][]{{2, 1, 0}, {2, 2, 2}, {0, 1, 2}});
+    public static final IntMatrix2d matrix =
+            new IntMatrix2d(new int[][]{{2, 1, 0}, {2, 2, 2}, {0, 1, 2}});
 
     public static int solve(int n) {
         assert n > 0;
