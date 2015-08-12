@@ -12,6 +12,13 @@ public class Blocks {
     public static final IntMatrix2d matrix =
             new IntMatrix2d(new int[][]{{2, 1, 0}, {2, 2, 2}, {0, 1, 2}});
 
+    /**
+     * a: both reds and greens are even.
+     * b: either reds or greens are odd.
+     * c: both reds and greens are odd.
+     *
+     * @return number of painting pattern both reds and greens are even.
+     */
     public static int solve(int n) {
         assert n > 0;
         return matrix.power(n).getAt(0, 0);
