@@ -10,6 +10,7 @@ import java.util.Scanner;
 public class RangeMinimumQuery {
     private final int N;
     private final int[] data;
+    public static final int maxInt = Integer.MAX_VALUE / 2;
 
     public static int highestBit(int n) {
         int _n;
@@ -22,7 +23,7 @@ public class RangeMinimumQuery {
 
     public RangeMinimumQuery(int n) {
         assert n > 0;
-        N = Integer.highestOneBit(n);
+        N = Integer.highestOneBit(n) << 1;
         data = new int[2 * N - 1];
         initialize();
     }
@@ -33,7 +34,7 @@ public class RangeMinimumQuery {
     }
 
     public void initialize() {
-        Arrays.fill(data, Integer.MAX_VALUE);
+        Arrays.fill(data, maxInt);
     }
 
     /**
@@ -42,7 +43,7 @@ public class RangeMinimumQuery {
      * @param index index.
      * @param n     value to be set.
      */
-    void update(int index, int n) {
+    public void update(int index, int n) {
         assert 0 <= index && index < N;
         int node = index + N - 1;
         data[node] = n;
@@ -54,7 +55,7 @@ public class RangeMinimumQuery {
 
     private int _query(int a, int b, int node, int left, int right) {
         // no intersection between [a, b) and [l, r)
-        if (right <= a || b <= left) return Integer.MAX_VALUE;
+        if (right <= a || b <= left) return maxInt;
         // [a, b) contains [l, r)
         if (a <= left && right <= b) return data[node];
             // minimum of children
@@ -73,7 +74,7 @@ public class RangeMinimumQuery {
      * @param b the upper bound of the range.
      * @return minimum value within the range.
      */
-    int query(int a, int b) {
+    public int query(int a, int b) {
         assert a < b;
         return _query(a, b, 0, 0, N);
     }
