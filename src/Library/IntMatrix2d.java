@@ -8,7 +8,7 @@ import java.util.function.Function;
  * Created by Yuya on 2015/08/09.
  */
 public class IntMatrix2d {
-    private final int row, column;
+    public final int row, column;
     private final int[][] matrix;
 
     private interface IntOperator extends Function<Integer, Integer> {
