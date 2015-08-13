@@ -12,18 +12,20 @@ public class RangeMinimumQuery {
     private final int[] data;
     public static final int maxInt = Integer.MAX_VALUE / 2;
 
-    public static int highestBit(int n) {
-        int _n;
-        do {
-            _n = n;
-            n |= n >> 1;
-        } while (_n != n);
-        return n - (n >>> 1);
+    public static int roundupToPowerOf2(int n) {
+        if (n < 0) return 0;
+        --n; // keep 2^x unchanged
+        n |= n >> 1;
+        n |= n >> 2;
+        n |= n >> 4;
+        n |= n >> 8;
+        n |= n >> 16;
+        return n + 1;
     }
 
     public RangeMinimumQuery(int n) {
         assert n > 0;
-        N = Integer.highestOneBit(n) << 1;
+        N = roundupToPowerOf2(n);
         data = new int[2 * N - 1];
         initialize();
     }
